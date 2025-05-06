@@ -360,22 +360,24 @@ loop do
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f8f9fa; }
-    h1, h2, h3 { color: #2c3e50; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; background-color: #f9f9f9; }
+    h1, h2, h3 { color: #515151; }
     .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .header .container { display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 24px; font-weight: bold; }
-    .login-container { max-width: 400px; margin: 50px auto; background-color: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .logo { font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .login-container { max-width: 400px; margin: 50px auto; background-color: white; border-radius: 8px; padding: 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
     .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-    .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
-           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; width: 100%; }
-    .btn:hover { background: #2980b9; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #515151; }
+    .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; color: #515151; }
+    .form-group input:focus { border-color: #f7b419; outline: none; box-shadow: 0 0 0 2px rgba(247, 180, 25, 0.2); }
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 12px 20px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px;
+           font-weight: bold; width: 100%; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
     .error-message { color: #e74c3c; margin-bottom: 15px; }
-    .footer { background-color: #34495e; color: white; padding: 30px 0; margin-top: 50px; }
-    .back-link { display: block; margin-top: 20px; text-align: center; color: #3498db; text-decoration: none; }
+    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+    .back-link { display: block; margin-top: 20px; text-align: center; color: #f7b419; text-decoration: none; font-weight: bold; }
     .back-link:hover { text-decoration: underline; }
   </style>
 </head>
@@ -414,7 +416,7 @@ loop do
   </footer>
 </body>
 </html>"
-  elsif path == "/admin" || path == "/admin/apartments"
+  elsif ["/admin", "/admin/apartments", "/admin/dashboard"].include?(path)
     response_content = "<!DOCTYPE html>
 <html>
 <head>
@@ -422,38 +424,40 @@ loop do
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
-    h1, h2, h3 { color: #2c3e50; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; }
+    h1, h2, h3 { color: #515151; }
     .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .header .container { display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 24px; font-weight: bold; }
+    .logo { font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
     .admin-panel { display: flex; gap: 30px; margin-bottom: 40px; }
-    .admin-sidebar { flex: 1; background-color: #f8f9fa; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .admin-sidebar { flex: 1; background-color: #f9f9f9; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
     .admin-content { flex: 3; }
     .sidebar-menu { list-style-type: none; padding: 0; margin: 0; }
-    .sidebar-menu li { margin-bottom: 10px; }
-    .sidebar-menu a { display: block; padding: 10px; text-decoration: none; color: #333; border-radius: 4px; transition: background-color 0.3s; }
-    .sidebar-menu a:hover, .sidebar-menu a.active { background-color: #e0e0e0; }
-    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
-           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; }
-    .btn:hover { background: #2980b9; }
-    .btn-green { background-color: #27ae60; }
-    .btn-green:hover { background-color: #219653; }
-    .btn-red { background-color: #e74c3c; }
-    .btn-red:hover { background-color: #c0392b; }
-    .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-    .table th, .table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
-    .table th { background-color: #f8f9fa; font-weight: bold; }
-    .table tbody tr:hover { background-color: #f8f9fa; }
-    .badge { display: inline-block; padding: 5px 10px; border-radius: 50px; font-size: 12px; font-weight: bold; }
-    .badge-success { background-color: #e6f7ee; color: #27ae60; }
-    .badge-warning { background-color: #fef5e7; color: #f39c12; }
-    .badge-danger { background-color: #fae9e7; color: #e74c3c; }
-    .action-buttons { display: flex; gap: 5px; }
+    .sidebar-menu li { margin-bottom: 12px; }
+    .sidebar-menu a { display: block; padding: 12px 15px; text-decoration: none; color: #515151; border-radius: 4px; transition: all 0.3s ease; font-weight: bold; }
+    .sidebar-menu a:hover { background-color: #f7b419; color: #515151; transform: translateX(5px); }
+    .sidebar-menu a.active { background-color: #f7b419; color: #515151; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 12px 20px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
+           font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .btn-green { background-color: #f7b419; }
+    .btn-green:hover { background-color: #ffc53d; }
+    .btn-red { background-color: #515151; color: white; }
+    .btn-red:hover { background-color: #666666; }
+    .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+    .table th, .table td { padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+    .table th { background-color: #f5f5f5; font-weight: bold; color: #515151; }
+    .table tbody tr:hover { background-color: #f9f9f9; }
+    .badge { display: inline-block; padding: 6px 12px; border-radius: 50px; font-size: 12px; font-weight: bold; }
+    .badge-success { background-color: rgba(247, 180, 25, 0.2); color: #f7b419; }
+    .badge-warning { background-color: rgba(243, 156, 18, 0.2); color: #f39c12; }
+    .badge-danger { background-color: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+    .action-buttons { display: flex; gap: 8px; }
     .login-prompt { text-align: center; margin: 100px 0; }
-    .footer { background-color: #34495e; color: white; padding: 30px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
   </style>
 </head>
 <body>
@@ -523,6 +527,349 @@ loop do
   </footer>
 </body>
 </html>"
+  elsif path == "/admin/users"
+    response_content = "<!DOCTYPE html>
+<html>
+<head>
+  <title>User Management - RealtyMonster</title>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; }
+    h1, h2, h3 { color: #515151; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .header .container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .admin-panel { display: flex; gap: 30px; margin-bottom: 40px; }
+    .admin-sidebar { flex: 1; background-color: #f9f9f9; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
+    .admin-content { flex: 3; }
+    .sidebar-menu { list-style-type: none; padding: 0; margin: 0; }
+    .sidebar-menu li { margin-bottom: 12px; }
+    .sidebar-menu a { display: block; padding: 12px 15px; text-decoration: none; color: #515151; border-radius: 4px; transition: all 0.3s ease; font-weight: bold; }
+    .sidebar-menu a:hover { background-color: #f7b419; color: #515151; transform: translateX(5px); }
+    .sidebar-menu a.active { background-color: #f7b419; color: #515151; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 12px 20px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
+           font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+    .table th, .table td { padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+    .table th { background-color: #f5f5f5; font-weight: bold; color: #515151; }
+    .table tbody tr:hover { background-color: #f9f9f9; }
+    .badge { display: inline-block; padding: 6px 12px; border-radius: 50px; font-size: 12px; font-weight: bold; }
+    .badge-admin { background-color: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+    .badge-landlord { background-color: rgba(52, 152, 219, 0.2); color: #3498db; }
+    .badge-renter { background-color: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+    .action-buttons { display: flex; gap: 8px; }
+    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+  </style>
+</head>
+<body>
+  <header class='header'>
+    <div class='container'>
+      <div class='logo'>RealtyMonster</div>
+    </div>
+  </header>
+  
+  <div class='container'>
+    <h1>User Management</h1>
+    
+    <div class='admin-panel'>
+      <div class='admin-sidebar'>
+        <ul class='sidebar-menu'>
+          <li><a href='/admin'>Dashboard</a></li>
+          <li><a href='/admin/apartments'>Apartments</a></li>
+          <li><a href='/admin/users' class='active'>Users</a></li>
+          <li><a href='/admin/inquiries'>Inquiries</a></li>
+          <li><a href='/admin/settings'>Settings</a></li>
+          <li><a href='/logout'>Logout</a></li>
+        </ul>
+      </div>
+      
+      <div class='admin-content'>
+        <div class='admin-header'>
+          <h2>Registered Users</h2>
+          <a href='/admin/users/new' class='btn'>Add New User</a>
+        </div>
+        
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Role</th>
+              <th>Last Login</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            #{USERS.map { |user| "
+            <tr>
+              <td>#{user[:id]}</td>
+              <td>#{user[:username]}</td>
+              <td><span class='badge badge-#{user[:role]}'>#{user[:role].capitalize}</span></td>
+              <td>May 6, 2025</td>
+              <td>Active</td>
+              <td class='action-buttons'>
+                <a href='/admin/users/#{user[:id]}/edit' class='btn' style='padding: 5px 10px; font-size: 12px;'>Edit</a>
+                <a href='/admin/users/#{user[:id]}/delete' class='btn btn-red' style='padding: 5px 10px; font-size: 12px;'>Delete</a>
+              </td>
+            </tr>" }.join("\n            ")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <footer class='footer'>
+    <div class='container'>
+      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>"
+  elsif path == "/admin/inquiries"
+    response_content = "<!DOCTYPE html>
+<html>
+<head>
+  <title>Inquiries - RealtyMonster</title>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; }
+    h1, h2, h3 { color: #515151; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .header .container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .admin-panel { display: flex; gap: 30px; margin-bottom: 40px; }
+    .admin-sidebar { flex: 1; background-color: #f9f9f9; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
+    .admin-content { flex: 3; }
+    .sidebar-menu { list-style-type: none; padding: 0; margin: 0; }
+    .sidebar-menu li { margin-bottom: 12px; }
+    .sidebar-menu a { display: block; padding: 12px 15px; text-decoration: none; color: #515151; border-radius: 4px; transition: all 0.3s ease; font-weight: bold; }
+    .sidebar-menu a:hover { background-color: #f7b419; color: #515151; transform: translateX(5px); }
+    .sidebar-menu a.active { background-color: #f7b419; color: #515151; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 12px 20px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
+           font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+    .table th, .table td { padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+    .table th { background-color: #f5f5f5; font-weight: bold; color: #515151; }
+    .table tbody tr:hover { background-color: #f9f9f9; }
+    .badge { display: inline-block; padding: 6px 12px; border-radius: 50px; font-size: 12px; font-weight: bold; }
+    .badge-new { background-color: rgba(247, 180, 25, 0.2); color: #f7b419; }
+    .badge-replied { background-color: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+    .badge-urgent { background-color: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+    .action-buttons { display: flex; gap: 8px; }
+    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+  </style>
+</head>
+<body>
+  <header class='header'>
+    <div class='container'>
+      <div class='logo'>RealtyMonster</div>
+    </div>
+  </header>
+  
+  <div class='container'>
+    <h1>Customer Inquiries</h1>
+    
+    <div class='admin-panel'>
+      <div class='admin-sidebar'>
+        <ul class='sidebar-menu'>
+          <li><a href='/admin'>Dashboard</a></li>
+          <li><a href='/admin/apartments'>Apartments</a></li>
+          <li><a href='/admin/users'>Users</a></li>
+          <li><a href='/admin/inquiries' class='active'>Inquiries</a></li>
+          <li><a href='/admin/settings'>Settings</a></li>
+          <li><a href='/logout'>Logout</a></li>
+        </ul>
+      </div>
+      
+      <div class='admin-content'>
+        <div class='admin-header'>
+          <h2>Recent Inquiries</h2>
+          <div>
+            <a href='/admin/inquiries?filter=new' class='btn' style='background-color: #f7b419; margin-right: 10px;'>New</a>
+            <a href='/admin/inquiries?filter=all' class='btn' style='background-color: #515151; color: white;'>All</a>
+          </div>
+        </div>
+        
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Property</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Luxurious Downtown Penthouse</td>
+              <td>John Smith <br><small>john.smith@example.com</small></td>
+              <td>May 6, 2025</td>
+              <td><span class='badge badge-new'>New</span></td>
+              <td class='action-buttons'>
+                <a href='/admin/inquiries/1/view' class='btn' style='padding: 5px 10px; font-size: 12px;'>View</a>
+                <a href='/admin/inquiries/1/reply' class='btn' style='padding: 5px 10px; font-size: 12px; background-color: #2ecc71;'>Reply</a>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Cozy Midtown Studio</td>
+              <td>Emma Johnson <br><small>emma.j@example.com</small></td>
+              <td>May 5, 2025</td>
+              <td><span class='badge badge-replied'>Replied</span></td>
+              <td class='action-buttons'>
+                <a href='/admin/inquiries/2/view' class='btn' style='padding: 5px 10px; font-size: 12px;'>View</a>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Spacious Brooklyn Brownstone</td>
+              <td>Michael Brown <br><small>mbrown@example.com</small></td>
+              <td>May 4, 2025</td>
+              <td><span class='badge badge-urgent'>Urgent</span></td>
+              <td class='action-buttons'>
+                <a href='/admin/inquiries/3/view' class='btn' style='padding: 5px 10px; font-size: 12px;'>View</a>
+                <a href='/admin/inquiries/3/reply' class='btn' style='padding: 5px 10px; font-size: 12px; background-color: #2ecc71;'>Reply</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <footer class='footer'>
+    <div class='container'>
+      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>"
+  elsif path == "/admin/settings"
+    response_content = "<!DOCTYPE html>
+<html>
+<head>
+  <title>Settings - RealtyMonster</title>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; }
+    h1, h2, h3 { color: #515151; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .header .container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .admin-panel { display: flex; gap: 30px; margin-bottom: 40px; }
+    .admin-sidebar { flex: 1; background-color: #f9f9f9; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
+    .admin-content { flex: 3; }
+    .sidebar-menu { list-style-type: none; padding: 0; margin: 0; }
+    .sidebar-menu li { margin-bottom: 12px; }
+    .sidebar-menu a { display: block; padding: 12px 15px; text-decoration: none; color: #515151; border-radius: 4px; transition: all 0.3s ease; font-weight: bold; }
+    .sidebar-menu a:hover { background-color: #f7b419; color: #515151; transform: translateX(5px); }
+    .sidebar-menu a.active { background-color: #f7b419; color: #515151; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 12px 20px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
+           font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .settings-section { background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e0e0e0; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #f7b419; outline: none; box-shadow: 0 0 0 2px rgba(247, 180, 25, 0.2); }
+    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+    .checkbox-group { display: flex; align-items: center; }
+    .checkbox-group input { width: auto; margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <header class='header'>
+    <div class='container'>
+      <div class='logo'>RealtyMonster</div>
+    </div>
+  </header>
+  
+  <div class='container'>
+    <h1>System Settings</h1>
+    
+    <div class='admin-panel'>
+      <div class='admin-sidebar'>
+        <ul class='sidebar-menu'>
+          <li><a href='/admin'>Dashboard</a></li>
+          <li><a href='/admin/apartments'>Apartments</a></li>
+          <li><a href='/admin/users'>Users</a></li>
+          <li><a href='/admin/inquiries'>Inquiries</a></li>
+          <li><a href='/admin/settings' class='active'>Settings</a></li>
+          <li><a href='/logout'>Logout</a></li>
+        </ul>
+      </div>
+      
+      <div class='admin-content'>
+        <form action='/admin/settings/update' method='post'>
+          <div class='settings-section'>
+            <h2>General Settings</h2>
+            
+            <div class='form-group'>
+              <label for='site_title'>Site Title</label>
+              <input type='text' id='site_title' name='site_title' value='RealtyMonster'>
+            </div>
+            
+            <div class='form-group'>
+              <label for='site_description'>Site Description</label>
+              <textarea id='site_description' name='site_description' rows='3'>Find your perfect apartment with RealtyMonster, the premier apartment listing platform.</textarea>
+            </div>
+            
+            <div class='form-group'>
+              <label for='contact_email'>Contact Email</label>
+              <input type='email' id='contact_email' name='contact_email' value='contact@realtymonster.com'>
+            </div>
+          </div>
+          
+          <div class='settings-section'>
+            <h2>Notification Settings</h2>
+            
+            <div class='form-group checkbox-group'>
+              <input type='checkbox' id='email_new_listing' name='email_new_listing' checked>
+              <label for='email_new_listing'>Email notification for new listings</label>
+            </div>
+            
+            <div class='form-group checkbox-group'>
+              <input type='checkbox' id='email_new_inquiry' name='email_new_inquiry' checked>
+              <label for='email_new_inquiry'>Email notification for new inquiries</label>
+            </div>
+            
+            <div class='form-group checkbox-group'>
+              <input type='checkbox' id='email_new_user' name='email_new_user' checked>
+              <label for='email_new_user'>Email notification for new user registrations</label>
+            </div>
+          </div>
+          
+          <button type='submit' class='btn'>Save Settings</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <footer class='footer'>
+    <div class='container'>
+      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>"
   elsif path == "/advanced-search"
     response_content = "<!DOCTYPE html>
 <html>
@@ -531,39 +878,42 @@ loop do
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
-    h1, h2, h3 { color: #2c3e50; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; }
+    h1, h2, h3 { color: #515151; }
     .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .header .container { display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 24px; font-weight: bold; }
-    .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
+    .logo { font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .back-link { display: inline-block; margin-bottom: 20px; color: #f7b419; text-decoration: none; font-weight: bold; }
     .back-link:hover { text-decoration: underline; }
-    .search-container { background-color: #f8f9fa; padding: 30px; border-radius: 8px; margin-bottom: 30px; }
+    .search-container { background-color: #f9f9f9; padding: 30px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #515151; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; color: #515151; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #f7b419; outline: none; box-shadow: 0 0 0 2px rgba(247, 180, 25, 0.2); }
     .form-row { display: flex; gap: 15px; margin-bottom: 15px; }
     .form-row .form-group { flex: 1; }
     .checkbox-group { display: flex; align-items: center; }
     .checkbox-group input { width: auto; margin-right: 10px; }
-    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
-           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; }
-    .btn:hover { background: #2980b9; }
-    .btn-search { background: #27ae60; padding: 12px 20px; }
-    .btn-search:hover { background: #219653; }
-    .btn-reset { background: #e74c3c; }
-    .btn-reset:hover { background: #c0392b; }
+    .checkbox-group input:checked { accent-color: #f7b419; }
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 12px 20px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
+           font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .btn-search { background: #f7b419; padding: 12px 20px; }
+    .btn-search:hover { background: #ffc53d; }
+    .btn-reset { background: #515151; color: white; }
+    .btn-reset:hover { background: #666666; }
     .search-title { margin-bottom: 30px; }
-    .search-title h1 { margin-bottom: 10px; }
-    .search-title p { color: #7f8c8d; font-size: 18px; }
+    .search-title h1 { margin-bottom: 10px; color: #515151; }
+    .search-title p { color: #757575; font-size: 18px; }
     .search-section { margin-bottom: 30px; }
-    .search-section h3 { border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; }
+    .search-section h3 { border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; color: #515151; }
     .feature-checkboxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
     .range-inputs { display: flex; gap: 10px; align-items: center; }
-    .range-inputs span { font-weight: bold; }
+    .range-inputs span { font-weight: bold; color: #515151; }
     .double-range { margin-bottom: 30px; }
-    .footer { background-color: #34495e; color: white; padding: 30px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
   </style>
 </head>
 <body>
@@ -945,38 +1295,42 @@ loop do
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
-    h1, h2, h3 { color: #2c3e50; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; }
+    h1, h2, h3 { color: #515151; }
     .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .header .container { display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 24px; font-weight: bold; }
-    .search-container { background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+    .logo { font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .search-container { background-color: #f9f9f9; padding: 25px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-    .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #515151; }
+    .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; color: #515151; }
+    .form-group input:focus, .form-group select:focus { border-color: #f7b419; outline: none; box-shadow: 0 0 0 2px rgba(247, 180, 25, 0.2); }
     .form-row { display: flex; gap: 15px; }
     .form-row .form-group { flex: 1; }
-    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
-           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; }
-    .btn:hover { background: #2980b9; }
-    .btn-search { background: #27ae60; }
-    .btn-search:hover { background: #219653; }
-    .btn-reset { background: #e74c3c; }
-    .btn-reset:hover { background: #c0392b; }
-    .apartments-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
-    .apartment-card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; transition: transform 0.3s; }
-    .apartment-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-    .apartment-img { height: 200px; background-color: #ddd; background-position: center; background-size: cover; }
-    .apartment-details { padding: 20px; }
-    .apartment-price { font-size: 22px; font-weight: bold; color: #27ae60; margin-bottom: 10px; }
-    .apartment-location { color: #7f8c8d; margin-bottom: 15px; }
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 12px 20px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
+           font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .btn-search { background: #f7b419; }
+    .btn-search:hover { background: #ffc53d; }
+    .btn-reset { background: #515151; color: white; }
+    .btn-reset:hover { background: #666666; }
+    .apartments-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
+    .apartment-card { border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; background-color: white; }
+    .apartment-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: #f7b419; }
+    .apartment-img { height: 200px; background-color: #f7b419; background-position: center; background-size: cover; }
+    .apartment-details { padding: 25px; }
+    .apartment-price { font-size: 24px; font-weight: bold; color: #f7b419; margin-bottom: 12px; }
+    .apartment-location { color: #757575; margin-bottom: 15px; }
     .apartment-features { display: flex; gap: 15px; margin-bottom: 15px; }
-    .apartment-feature { display: flex; align-items: center; }
+    .apartment-feature { display: flex; align-items: center; color: #515151; }
+    .apartment-feature strong { color: #515151; }
     .apartment-feature span { margin-left: 5px; }
-    .footer { background-color: #34495e; color: white; padding: 30px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
     .checkbox-group { display: flex; align-items: center; }
     .checkbox-group input { width: auto; margin-right: 10px; }
+    .checkbox-group input:checked { accent-color: #f7b419; }
   </style>
 </head>
 <body>
@@ -1141,35 +1495,37 @@ loop do
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
-    h1, h2, h3 { color: #2c3e50; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; }
+    h1, h2, h3 { color: #515151; }
     .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .header .container { display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 24px; font-weight: bold; }
-    .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
+    .logo { font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .back-link { display: inline-block; margin-bottom: 20px; color: #f7b419; text-decoration: none; font-weight: bold; }
     .back-link:hover { text-decoration: underline; }
     .apartment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-    .apartment-title h1 { margin: 0; }
-    .apartment-price { font-size: 28px; font-weight: bold; color: #27ae60; }
-    .apartment-image { height: 400px; background-color: #3498db; border-radius: 8px; margin-bottom: 30px; }
+    .apartment-title h1 { margin: 0; color: #515151; }
+    .apartment-price { font-size: 28px; font-weight: bold; color: #f7b419; }
+    .apartment-image { height: 400px; background-color: #f7b419; border-radius: 8px; margin-bottom: 30px; }
     .apartment-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-    .apartment-details { background-color: #f8f9fa; padding: 20px; border-radius: 8px; }
+    .apartment-details { background-color: #f9f9f9; padding: 25px; border-radius: 8px; border: 1px solid #e0e0e0; }
     .apartment-feature-list { list-style-type: none; padding: 0; }
     .apartment-feature-list li { margin-bottom: 10px; padding-left: 25px; position: relative; }
-    .apartment-feature-list li:before { content: '✓'; position: absolute; left: 0; color: #27ae60; font-weight: bold; }
-    .contact-form { background-color: #f8f9fa; padding: 20px; border-radius: 8px; }
+    .apartment-feature-list li:before { content: '✓'; position: absolute; left: 0; color: #f7b419; font-weight: bold; }
+    .contact-form { background-color: #f9f9f9; padding: 25px; border-radius: 8px; border: 1px solid #e0e0e0; }
     .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-    .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
-           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; }
-    .btn:hover { background: #2980b9; }
-    .footer { background-color: #34495e; color: white; padding: 30px 0; margin-top: 50px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #515151; }
+    .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; color: #515151; }
+    .form-group input:focus, .form-group textarea:focus { border-color: #f7b419; outline: none; box-shadow: 0 0 0 2px rgba(247, 180, 25, 0.2); }
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 12px 20px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
+           font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
     .property-info { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
-    .property-info-item { flex: 1; min-width: 150px; background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .property-info-item { flex: 1; min-width: 150px; background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
     .property-info-item strong { display: block; margin-bottom: 5px; font-size: 14px; color: #7f8c8d; }
-    .property-info-item span { font-size: 18px; font-weight: bold; }
+    .property-info-item span { font-size: 18px; font-weight: bold; color: #515151; }
   </style>
 </head>
 <body>
