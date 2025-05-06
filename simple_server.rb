@@ -2,6 +2,10 @@ require 'socket'
 require 'uri'
 require 'json'
 
+# Site configuration
+SITE_NAME = "SpaceHunter"
+LOGO_HTML = "<img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter"
+
 # In-memory database for apartments
 APARTMENTS = [
   {
@@ -384,7 +388,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
@@ -463,7 +467,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
@@ -569,7 +573,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
@@ -673,7 +677,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
@@ -798,7 +802,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
@@ -919,7 +923,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
@@ -1133,7 +1137,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
@@ -1291,7 +1295,7 @@ loop do
     response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>RealtyMonster - Apartment Search</title>
+  <title>SpaceHunter - Apartment Search</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
@@ -1336,7 +1340,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
@@ -1531,7 +1535,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
@@ -1646,7 +1650,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
@@ -1697,7 +1701,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'>RealtyMonster</div>
+      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
     </div>
   </header>
   
