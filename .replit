@@ -21,8 +21,12 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd . && bundle install && bundle exec ruby app.rb -p 5000 -o 0.0.0.0"
+args = "cd . && bundle install && bundle exec rackup -o 0.0.0.0 -p 5000"
 waitForPort = 5000
 
 [deployment]
-run = ["sh", "-c", "cd . && bundle install && bundle exec ruby app.rb -p 5000 -o 0.0.0.0"]
+run = ["sh", "-c", "cd . && bundle install && bundle exec rackup -o 0.0.0.0 -p 5000"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
