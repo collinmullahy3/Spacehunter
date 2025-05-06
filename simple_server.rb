@@ -360,7 +360,7 @@ loop do
     response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>Login - RealtyMonster</title>
+  <title>SpaceHunter</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
@@ -370,7 +370,7 @@ loop do
     .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .header .container { display: flex; justify-content: space-between; align-items: center; }
     .logo { font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-    .login-container { max-width: 400px; margin: 50px auto; background-color: white; border-radius: 8px; padding: 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
+    .login-container { max-width: 400px; margin: 50px auto; background-color: #515151; border-radius: 8px; padding: 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #515151; }
     .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; color: #515151; }
@@ -379,8 +379,8 @@ loop do
            text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px;
            font-weight: bold; width: 100%; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-    .error-message { color: #e74c3c; margin-bottom: 15px; }
-    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+    .error-message { color: #515151; margin-bottom: 15px; }
+    .footer { background-color: #515151; color: #515151; padding: 40px 0; margin-top: 50px; }
     .back-link { display: block; margin-top: 20px; text-align: center; color: #f7b419; text-decoration: none; font-weight: bold; }
     .back-link:hover { text-decoration: underline; }
   </style>
@@ -415,7 +415,7 @@ loop do
   
   <footer class='footer'>
     <div class='container'>
-      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+      <p>&copy; 2025 SpaceHunter. All rights reserved.</p>
     </div>
   </footer>
 </body>
@@ -424,7 +424,7 @@ loop do
     response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Portal - RealtyMonster</title>
+  <title>SpaceHunter</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
@@ -449,7 +449,7 @@ loop do
     .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
     .btn-green { background-color: #f7b419; }
     .btn-green:hover { background-color: #ffc53d; }
-    .btn-red { background-color: #515151; color: white; }
+    .btn-red { background-color: #515151; color: #515151; }
     .btn-red:hover { background-color: #666666; }
     .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
     .table th, .table td { padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
@@ -458,10 +458,10 @@ loop do
     .badge { display: inline-block; padding: 6px 12px; border-radius: 50px; font-size: 12px; font-weight: bold; }
     .badge-success { background-color: rgba(247, 180, 25, 0.2); color: #f7b419; }
     .badge-warning { background-color: rgba(243, 156, 18, 0.2); color: #f39c12; }
-    .badge-danger { background-color: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+    .badge-danger { background-color: rgba(231, 76, 60, 0.2); color: #515151; }
     .action-buttons { display: flex; gap: 8px; }
     .login-prompt { text-align: center; margin: 100px 0; }
-    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: #515151; padding: 40px 0; margin-top: 50px; }
   </style>
 </head>
 <body>
@@ -526,7 +526,7 @@ loop do
   
   <footer class='footer'>
     <div class='container'>
-      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+      <p>&copy; 2025 SpaceHunter. All rights reserved.</p>
     </div>
   </footer>
 </body>
@@ -535,7 +535,7 @@ loop do
     response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>User Management - RealtyMonster</title>
+  <title>SpaceHunter</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
@@ -563,11 +563,11 @@ loop do
     .table th { background-color: #f5f5f5; font-weight: bold; color: #515151; }
     .table tbody tr:hover { background-color: #f9f9f9; }
     .badge { display: inline-block; padding: 6px 12px; border-radius: 50px; font-size: 12px; font-weight: bold; }
-    .badge-admin { background-color: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+    .badge-admin { background-color: rgba(231, 76, 60, 0.2); color: #515151; }
     .badge-landlord { background-color: rgba(52, 152, 219, 0.2); color: #3498db; }
     .badge-renter { background-color: rgba(46, 204, 113, 0.2); color: #2ecc71; }
     .action-buttons { display: flex; gap: 8px; }
-    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: #515151; padding: 40px 0; margin-top: 50px; }
   </style>
 </head>
 <body>
@@ -630,7 +630,7 @@ loop do
   
   <footer class='footer'>
     <div class='container'>
-      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+      <p>&copy; 2025 SpaceHunter. All rights reserved.</p>
     </div>
   </footer>
 </body>
@@ -639,7 +639,7 @@ loop do
     response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>Inquiries - RealtyMonster</title>
+  <title>SpaceHunter</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
@@ -669,9 +669,9 @@ loop do
     .badge { display: inline-block; padding: 6px 12px; border-radius: 50px; font-size: 12px; font-weight: bold; }
     .badge-new { background-color: rgba(247, 180, 25, 0.2); color: #f7b419; }
     .badge-replied { background-color: rgba(46, 204, 113, 0.2); color: #2ecc71; }
-    .badge-urgent { background-color: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+    .badge-urgent { background-color: rgba(231, 76, 60, 0.2); color: #515151; }
     .action-buttons { display: flex; gap: 8px; }
-    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: #515151; padding: 40px 0; margin-top: 50px; }
   </style>
 </head>
 <body>
@@ -701,7 +701,7 @@ loop do
           <h2>Recent Inquiries</h2>
           <div>
             <a href='/admin/inquiries?filter=new' class='btn' style='background-color: #f7b419; margin-right: 10px;'>New</a>
-            <a href='/admin/inquiries?filter=all' class='btn' style='background-color: #515151; color: white;'>All</a>
+            <a href='/admin/inquiries?filter=all' class='btn' style='background-color: #515151; color: #515151;'>All</a>
           </div>
         </div>
         
@@ -757,7 +757,7 @@ loop do
   
   <footer class='footer'>
     <div class='container'>
-      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+      <p>&copy; 2025 SpaceHunter. All rights reserved.</p>
     </div>
   </footer>
 </body>
@@ -766,7 +766,7 @@ loop do
     response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>Settings - RealtyMonster</title>
+  <title>SpaceHunter</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
@@ -789,12 +789,12 @@ loop do
            text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
            font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-    .settings-section { background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e0e0e0; }
+    .settings-section { background-color: #515151; padding: 25px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e0e0e0; }
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #f7b419; outline: none; box-shadow: 0 0 0 2px rgba(247, 180, 25, 0.2); }
-    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: #515151; padding: 40px 0; margin-top: 50px; }
     .checkbox-group { display: flex; align-items: center; }
     .checkbox-group input { width: auto; margin-right: 10px; }
   </style>
@@ -869,7 +869,7 @@ loop do
   
   <footer class='footer'>
     <div class='container'>
-      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+      <p>&copy; 2025 SpaceHunter. All rights reserved.</p>
     </div>
   </footer>
 </body>
@@ -878,7 +878,7 @@ loop do
     response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>Advanced Search - RealtyMonster</title>
+  <title>SpaceHunter</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
@@ -906,7 +906,7 @@ loop do
     .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
     .btn-search { background: #f7b419; padding: 12px 20px; }
     .btn-search:hover { background: #ffc53d; }
-    .btn-reset { background: #515151; color: white; }
+    .btn-reset { background: #515151; color: #515151; }
     .btn-reset:hover { background: #666666; }
     .search-title { margin-bottom: 30px; }
     .search-title h1 { margin-bottom: 10px; color: #515151; }
@@ -917,7 +917,7 @@ loop do
     .range-inputs { display: flex; gap: 10px; align-items: center; }
     .range-inputs span { font-weight: bold; color: #515151; }
     .double-range { margin-bottom: 30px; }
-    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: #515151; padding: 40px 0; margin-top: 50px; }
   </style>
 </head>
 <body>
@@ -1089,7 +1089,7 @@ loop do
   
   <footer class='footer'>
     <div class='container'>
-      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+      <p>&copy; 2025 SpaceHunter. All rights reserved.</p>
     </div>
   </footer>
 </body>
@@ -1098,14 +1098,14 @@ loop do
     response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>Add New Apartment - RealtyMonster</title>
+  <title>SpaceHunter</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
     h1, h2, h3 { color: #2c3e50; }
     .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; }
     .header .container { display: flex; justify-content: space-between; align-items: center; }
     .logo { font-size: 24px; font-weight: bold; }
     .admin-panel { display: flex; gap: 30px; margin-bottom: 40px; }
@@ -1124,12 +1124,12 @@ loop do
     .form-row .form-group { flex: 1; }
     .checkbox-group { display: flex; align-items: center; }
     .checkbox-group input { width: auto; margin-right: 10px; }
-    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 10px 15px; 
            text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; }
     .btn:hover { background: #2980b9; }
     .btn-green { background-color: #27ae60; }
     .btn-green:hover { background-color: #219653; }
-    .footer { background-color: #34495e; color: white; padding: 30px 0; margin-top: 50px; }
+    .footer { background-color: #f7b419; color: #515151; padding: 30px 0; margin-top: 50px; }
     .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
     .back-link:hover { text-decoration: underline; }
   </style>
@@ -1286,7 +1286,7 @@ loop do
   
   <footer class='footer'>
     <div class='container'>
-      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+      <p>&copy; 2025 SpaceHunter. All rights reserved.</p>
     </div>
   </footer>
 </body>
@@ -1318,10 +1318,10 @@ loop do
     .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
     .btn-search { background: #f7b419; }
     .btn-search:hover { background: #ffc53d; }
-    .btn-reset { background: #515151; color: white; }
+    .btn-reset { background: #515151; color: #515151; }
     .btn-reset:hover { background: #666666; }
     .apartments-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
-    .apartment-card { border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; background-color: white; }
+    .apartment-card { border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; transition: all 0.3s ease; background-color: #515151; }
     .apartment-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: #f7b419; }
     .apartment-img { height: 200px; background-color: #f7b419; background-position: center; background-size: cover; }
     .apartment-details { padding: 25px; }
@@ -1331,7 +1331,7 @@ loop do
     .apartment-feature { display: flex; align-items: center; color: #515151; }
     .apartment-feature strong { color: #515151; }
     .apartment-feature span { margin-left: 5px; }
-    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: #515151; padding: 40px 0; margin-top: 50px; }
     .checkbox-group { display: flex; align-items: center; }
     .checkbox-group input { width: auto; margin-right: 10px; }
     .checkbox-group input:checked { accent-color: #f7b419; }
@@ -1452,7 +1452,7 @@ loop do
       apartments.each do |apt|
         response_content += "
         <div class='apartment-card'>
-          <div class='apartment-img' style='background-color: #3498db;'></div>
+          <div class='apartment-img' style='background-color: #f7b419;'></div>
           <div class='apartment-details'>
             <h3>#{apt[:title]}</h3>
             <div class='apartment-price'>$#{apt[:price]}/month</div>
@@ -1481,7 +1481,7 @@ loop do
   
   <footer class='footer'>
     <div class='container'>
-      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+      <p>&copy; 2025 SpaceHunter. All rights reserved.</p>
     </div>
   </footer>
 </body>
@@ -1495,7 +1495,7 @@ loop do
       response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>#{apartment[:title]} - RealtyMonster</title>
+  <title>SpaceHunter</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
@@ -1525,9 +1525,9 @@ loop do
            text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
            font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: #515151; padding: 40px 0; margin-top: 50px; }
     .property-info { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
-    .property-info-item { flex: 1; min-width: 150px; background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
+    .property-info-item { flex: 1; min-width: 150px; background-color: #515151; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
     .property-info-item strong { display: block; margin-bottom: 5px; font-size: 14px; color: #7f8c8d; }
     .property-info-item span { font-size: 18px; font-weight: bold; color: #515151; }
   </style>
@@ -1624,7 +1624,7 @@ loop do
   
   <footer class='footer'>
     <div class='container'>
-      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+      <p>&copy; 2025 SpaceHunter. All rights reserved.</p>
     </div>
   </footer>
 </body>
@@ -1634,16 +1634,16 @@ loop do
       response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>Apartment Not Found - RealtyMonster</title>
+  <title>SpaceHunter</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; text-align: center; }
-    h1 { color: #e74c3c; }
+    h1 { color: #515151; }
     .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
-    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 10px 15px; 
            text-decoration: none; border-radius: 4px; margin-top: 20px; }
-    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; }
     .logo { font-size: 24px; font-weight: bold; }
   </style>
 </head>
@@ -1685,16 +1685,16 @@ loop do
     response_content = "<!DOCTYPE html>
 <html>
 <head>
-  <title>Page Not Found - RealtyMonster</title>
+  <title>SpaceHunter</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; text-align: center; }
-    h1 { color: #e74c3c; }
+    h1 { color: #515151; }
     .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
-    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
+    .btn { display: inline-block; background: #f7b419; color: #515151; padding: 10px 15px; 
            text-decoration: none; border-radius: 4px; margin-top: 20px; }
-    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; }
     .logo { font-size: 24px; font-weight: bold; }
   </style>
 </head>
