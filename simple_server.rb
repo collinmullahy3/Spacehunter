@@ -414,7 +414,7 @@ loop do
   </footer>
 </body>
 </html>"
-  elsif path == "/admin"
+  elsif path == "/admin" || path == "/admin/apartments"
     response_content = "<!DOCTYPE html>
 <html>
 <head>
@@ -513,6 +513,223 @@ loop do
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
+  
+  <footer class='footer'>
+    <div class='container'>
+      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>"
+  elsif path == "/advanced-search"
+    response_content = "<!DOCTYPE html>
+<html>
+<head>
+  <title>Advanced Search - RealtyMonster</title>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
+    h1, h2, h3 { color: #2c3e50; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header .container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 24px; font-weight: bold; }
+    .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .search-container { background-color: #f8f9fa; padding: 30px; border-radius: 8px; margin-bottom: 30px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+    .form-row { display: flex; gap: 15px; margin-bottom: 15px; }
+    .form-row .form-group { flex: 1; }
+    .checkbox-group { display: flex; align-items: center; }
+    .checkbox-group input { width: auto; margin-right: 10px; }
+    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; }
+    .btn:hover { background: #2980b9; }
+    .btn-search { background: #27ae60; padding: 12px 20px; }
+    .btn-search:hover { background: #219653; }
+    .btn-reset { background: #e74c3c; }
+    .btn-reset:hover { background: #c0392b; }
+    .search-title { margin-bottom: 30px; }
+    .search-title h1 { margin-bottom: 10px; }
+    .search-title p { color: #7f8c8d; font-size: 18px; }
+    .search-section { margin-bottom: 30px; }
+    .search-section h3 { border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; }
+    .feature-checkboxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+    .range-inputs { display: flex; gap: 10px; align-items: center; }
+    .range-inputs span { font-weight: bold; }
+    .double-range { margin-bottom: 30px; }
+    .footer { background-color: #34495e; color: white; padding: 30px 0; margin-top: 50px; }
+  </style>
+</head>
+<body>
+  <header class='header'>
+    <div class='container'>
+      <div class='logo'>RealtyMonster</div>
+    </div>
+  </header>
+  
+  <div class='container'>
+    <a href='/' class='back-link'>&larr; Back to Basic Search</a>
+    
+    <div class='search-title'>
+      <h1>Advanced Apartment Search</h1>
+      <p>Find your perfect home with our powerful search tools</p>
+    </div>
+    
+    <div class='search-container'>
+      <form action='/' method='get'>
+        <div class='search-section'>
+          <h3>Location & Property Type</h3>
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='neighborhood'>Neighborhood</label>
+              <input type='text' id='neighborhood' name='neighborhood' placeholder='E.g. Downtown, Midtown, etc.' value='#{query_params['neighborhood'] || ''}'>
+            </div>
+            <div class='form-group'>
+              <label for='property_type'>Property Type</label>
+              <select id='property_type' name='property_type'>
+                <option value='' #{query_params['property_type'].nil? || query_params['property_type'].empty? ? 'selected' : ''}>Any</option>
+                <option value='Apartment' #{query_params['property_type'] == 'Apartment' ? 'selected' : ''}>Apartment</option>
+                <option value='Condo' #{query_params['property_type'] == 'Condo' ? 'selected' : ''}>Condo</option>
+                <option value='Townhouse' #{query_params['property_type'] == 'Townhouse' ? 'selected' : ''}>Townhouse</option>
+                <option value='Co-op' #{query_params['property_type'] == 'Co-op' ? 'selected' : ''}>Co-op</option>
+              </select>
+            </div>
+            <div class='form-group'>
+              <label for='address_keyword'>Address Keyword</label>
+              <input type='text' id='address_keyword' name='address_keyword' placeholder='E.g. Main Street, Avenue, etc.' value='#{query_params['address_keyword'] || ''}'>
+            </div>
+          </div>
+        </div>
+        
+        <div class='search-section'>
+          <h3>Size & Layout</h3>
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='min_bedrooms'>Bedrooms</label>
+              <select id='min_bedrooms' name='min_bedrooms'>
+                <option value='' #{query_params['min_bedrooms'].nil? || query_params['min_bedrooms'].empty? ? 'selected' : ''}>Any</option>
+                <option value='0' #{query_params['min_bedrooms'] == '0' ? 'selected' : ''}>Studio</option>
+                <option value='1' #{query_params['min_bedrooms'] == '1' ? 'selected' : ''}>1+ Bedrooms</option>
+                <option value='2' #{query_params['min_bedrooms'] == '2' ? 'selected' : ''}>2+ Bedrooms</option>
+                <option value='3' #{query_params['min_bedrooms'] == '3' ? 'selected' : ''}>3+ Bedrooms</option>
+                <option value='4' #{query_params['min_bedrooms'] == '4' ? 'selected' : ''}>4+ Bedrooms</option>
+              </select>
+            </div>
+            <div class='form-group'>
+              <label for='min_bathrooms'>Minimum Bathrooms</label>
+              <select id='min_bathrooms' name='min_bathrooms'>
+                <option value='' #{query_params['min_bathrooms'].nil? || query_params['min_bathrooms'].empty? ? 'selected' : ''}>Any</option>
+                <option value='1' #{query_params['min_bathrooms'] == '1' ? 'selected' : ''}>1+ Bathrooms</option>
+                <option value='1.5' #{query_params['min_bathrooms'] == '1.5' ? 'selected' : ''}>1.5+ Bathrooms</option>
+                <option value='2' #{query_params['min_bathrooms'] == '2' ? 'selected' : ''}>2+ Bathrooms</option>
+                <option value='2.5' #{query_params['min_bathrooms'] == '2.5' ? 'selected' : ''}>2.5+ Bathrooms</option>
+                <option value='3' #{query_params['min_bathrooms'] == '3' ? 'selected' : ''}>3+ Bathrooms</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='min_square_feet'>Square Feet Range</label>
+              <div class='range-inputs'>
+                <input type='number' id='min_square_feet' name='min_square_feet' placeholder='Min' value='#{query_params['min_square_feet'] || ''}'>
+                <span>to</span>
+                <input type='number' id='max_square_feet' name='max_square_feet' placeholder='Max' value='#{query_params['max_square_feet'] || ''}'>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class='search-section'>
+          <h3>Price & Terms</h3>
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='price_range'>Monthly Rent Range ($)</label>
+              <div class='range-inputs'>
+                <input type='number' id='min_price' name='min_price' placeholder='Min' value='#{query_params['min_price'] || ''}'>
+                <span>to</span>
+                <input type='number' id='max_price' name='max_price' placeholder='Max' value='#{query_params['max_price'] || ''}'>
+              </div>
+            </div>
+            <div class='form-group'>
+              <label for='lease_term'>Lease Term</label>
+              <select id='lease_term' name='lease_term'>
+                <option value='' #{query_params['lease_term'].nil? || query_params['lease_term'].empty? ? 'selected' : ''}>Any</option>
+                <option value='12 Months' #{query_params['lease_term'] == '12 Months' ? 'selected' : ''}>12 Months</option>
+                <option value='24 Months' #{query_params['lease_term'] == '24 Months' ? 'selected' : ''}>24 Months</option>
+                <option value='Month-to-Month' #{query_params['lease_term'] == 'Month-to-Month' ? 'selected' : ''}>Month-to-Month</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='security_deposit'>Maximum Security Deposit ($)</label>
+              <input type='number' id='max_security_deposit' name='max_security_deposit' value='#{query_params['max_security_deposit'] || ''}'>
+            </div>
+            <div class='form-group'>
+              <label for='available_from'>Available From</label>
+              <input type='date' id='available_from' name='available_from' value='#{query_params['available_from'] || ''}'>
+            </div>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group checkbox-group'>
+              <input type='checkbox' id='no_broker_fee' name='no_broker_fee' value='true' #{query_params['no_broker_fee'] == 'true' ? 'checked' : ''}>
+              <label for='no_broker_fee'>No Broker Fee</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class='search-section'>
+          <h3>Amenities & Features</h3>
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='amenities'>Amenities (comma separated)</label>
+              <input type='text' id='amenities' name='amenities' placeholder='E.g. Elevator, Doorman, Gym, etc.' value='#{query_params['amenities'] || ''}'>
+            </div>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group checkbox-group'>
+              <input type='checkbox' id='pet_friendly' name='pet_friendly' value='true' #{query_params['pet_friendly'] == 'true' ? 'checked' : ''}>
+              <label for='pet_friendly'>Pet Friendly</label>
+            </div>
+            <div class='form-group checkbox-group'>
+              <input type='checkbox' id='has_parking' name='has_parking' value='true' #{query_params['has_parking'] == 'true' ? 'checked' : ''}>
+              <label for='has_parking'>Parking Available</label>
+            </div>
+            <div class='form-group checkbox-group'>
+              <input type='checkbox' id='has_outdoor_space' name='has_outdoor_space' value='true' #{query_params['has_outdoor_space'] == 'true' ? 'checked' : ''}>
+              <label for='has_outdoor_space'>Outdoor Space</label>
+            </div>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='utilities_included'>Utilities Included</label>
+              <select id='utilities_included' name='utilities_included'>
+                <option value='' #{query_params['utilities_included'].nil? || query_params['utilities_included'].empty? ? 'selected' : ''}>Any</option>
+                <option value='Water' #{query_params['utilities_included'] == 'Water' ? 'selected' : ''}>Water</option>
+                <option value='Heat' #{query_params['utilities_included'] == 'Heat' ? 'selected' : ''}>Heat</option>
+                <option value='Gas' #{query_params['utilities_included'] == 'Gas' ? 'selected' : ''}>Gas</option>
+                <option value='Electric' #{query_params['utilities_included'] == 'Electric' ? 'selected' : ''}>Electric</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class='form-row'>
+          <button type='submit' class='btn btn-search'>Search Apartments</button>
+          <a href='/' class='btn btn-reset'>Reset Filters</a>
+        </div>
+      </form>
     </div>
   </div>
   
