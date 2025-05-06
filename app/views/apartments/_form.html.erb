@@ -1,0 +1,126 @@
+<%= form_with(model: apartment, local: true) do |form| %>
+  <% if apartment.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(apartment.errors.count, "error") %> prohibited this apartment from being saved:</h5>
+
+      <ul>
+        <% apartment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Basic Information</h5>
+          
+          <div class="mb-3">
+            <%= form.label :title, class: "form-label" %>
+            <%= form.text_field :title, class: "form-control", placeholder: "Enter the title of the apartment" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :description, class: "form-label" %>
+            <%= form.text_area :description, class: "form-control", rows: 5, placeholder: "Describe the apartment" %>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= form.label :price, class: "form-label" %>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <%= form.number_field :price, class: "form-control", step: 0.01, min: 0, placeholder: "0.00" %>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= form.label :available_date, class: "form-label" %>
+                <%= form.date_field :available_date, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <%= form.label :bedrooms, class: "form-label" %>
+                <%= form.number_field :bedrooms, class: "form-control", min: 0 %>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="mb-3">
+                <%= form.label :bathrooms, class: "form-label" %>
+                <%= form.number_field :bathrooms, class: "form-control", step: 0.5, min: 0 %>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="mb-3">
+                <%= form.label :square_feet, class: "form-label" %>
+                <%= form.number_field :square_feet, class: "form-control", min: 0 %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Location</h5>
+          
+          <div class="mb-3">
+            <%= form.label :address, class: "form-label" %>
+            <%= form.text_field :address, class: "form-control", placeholder: "Street address" %>
+          </div>
+          
+          <div class="mb-3">
+            <%= form.label :city, class: "form-label" %>
+            <%= form.text_field :city, class: "form-control", placeholder: "City" %>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= form.label :state, class: "form-label" %>
+                <%= form.text_field :state, class: "form-control", placeholder: "State" %>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= form.label :zip, class: "form-label" %>
+                <%= form.text_field :zip, class: "form-control", placeholder: "Zip code" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Images</h5>
+          
+          <div class="mb-3">
+            <%= form.label :images, class: "form-label" %>
+            <%= form.file_field :images, multiple: true, class: "form-control" %>
+            <div class="form-text">Select multiple images to upload</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="d-flex justify-content-between">
+    <%= link_to "Cancel", apartment.new_record? ? apartments_path : apartment_path(apartment), class: "btn btn-outline-secondary" %>
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

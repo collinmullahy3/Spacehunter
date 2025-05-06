@@ -1,0 +1,148 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+// Custom Bootstrap variables
+$primary: #3c8dbc;
+$secondary: #f39c12;
+$success: #00a65a;
+$info: #00c0ef;
+$warning: #f39c12;
+$danger: #f56954;
+
+// Import Bootstrap
+@import "bootstrap";
+
+// General Styles
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+// Navbar
+.navbar-brand {
+  font-weight: bold;
+  color: #fff !important;
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+// Cards
+.card {
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.card:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+// Apartment listings
+.apartment-listing {
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.apartment-details {
+  padding: 20px;
+}
+
+.amenities-list {
+  list-style-type: none;
+  padding-left: 0;
+  
+  li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+// Buttons
+.btn-primary {
+  background-color: $primary;
+  border-color: darken($primary, 5%);
+  
+  &:hover {
+    background-color: darken($primary, 10%);
+    border-color: darken($primary, 15%);
+  }
+}
+
+// Forms
+.form-control:focus {
+  border-color: $primary;
+  box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+}
+
+// Flash messages
+.alert {
+  margin-bottom: 20px;
+}
+
+// Search filters
+.search-filters {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+// Footer
+footer {
+  padding: 20px 0;
+  background-color: #333;
+  color: #fff;
+  margin-top: 40px;
+}
+
+// Image preview
+#image_preview {
+  max-height: 200px;
+  margin-top: 10px;
+}
+
+// Price range slider
+.price-slider {
+  margin: 20px 0;
+}
+
+// Responsive adjustments
+@media (max-width: 767px) {
+  .card-img-top {
+    height: 150px;
+  }
+}

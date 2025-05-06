@@ -1,0 +1,121 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-body text-center">
+          <% if @user.avatar.attached? %>
+            <%= image_tag @user.avatar, class: 'img-fluid rounded-circle mb-3', style: 'max-width: 150px;' %>
+          <% else %>
+            <svg class="bd-placeholder-img rounded-circle mb-3" width="150" height="150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+              <rect width="100%" height="100%" fill="#868e96"></rect>
+              <text x="50%" y="50%" fill="#dee2e6" dy=".3em" text-anchor="middle"><%= @user.name.first %></text>
+            </svg>
+          <% end %>
+          
+          <h3 class="card-title"><%= @user.name %></h3>
+          <p class="text-muted">
+            <%= @user.role.capitalize %> 
+            <% if @user.admin? %>
+              <span class="badge badge-primary">Admin</span>
+            <% end %>
+          </p>
+          
+          <% if @user.phone.present? %>
+            <p><i class="fa fa-phone"></i> <%= @user.phone %></p>
+          <% end %>
+          
+          <p><i class="fa fa-envelope"></i> <%= mail_to @user.email %></p>
+          
+          <% if current_user == @user %>
+            <%= link_to 'Edit Profile', edit_user_registration_path, class: 'btn btn-outline-primary btn-block' %>
+          <% end %>
+        </div>
+      </div>
+      
+      <% if @user.bio.present? %>
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>About</h4>
+          </div>
+          <div class="card-body">
+            <%= simple_format @user.bio %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4>
+            <% if current_user == @user %>
+              My Listings
+            <% else %>
+              Listings by <%= @user.name %>
+            <% end %>
+          </h4>
+          
+          <% if current_user == @user %>
+            <%= link_to 'Post New Apartment', new_apartment_path, class: 'btn btn-primary' %>
+          <% end %>
+        </div>
+        
+        <div class="card-body">
+          <% if @apartments.any? %>
+            <div class="row">
+              <% @apartments.each do |apartment| %>
+                <div class="col-md-6 mb-4">
+                  <div class="card h-100">
+                    <% if apartment.image.attached? %>
+                      <%= image_tag apartment.image, class: 'card-img-top', style: 'height: 150px; object-fit: cover;' %>
+                    <% else %>
+                      <svg class="card-img-top" width="100%" height="150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                        <rect width="100%" height="100%" fill="#868e96"></rect>
+                        <text x="50%" y="50%" fill="#dee2e6" dy=".3em" text-anchor="middle">No Image</text>
+                      </svg>
+                    <% end %>
+                    
+                    <div class="card-body">
+                      <h5 class="card-title"><%= link_to apartment.title, apartment_path(apartment) %></h5>
+                      <h6 class="card-subtitle mb-2 text-muted"><%= apartment.formatted_price %>/month</h6>
+                      <p class="card-text">
+                        <i class="fa fa-map-marker-alt"></i> <%= apartment.city %>, <%= apartment.state %><br>
+                        <i class="fa fa-bed"></i> <%= apartment.bedrooms %> |
+                        <i class="fa fa-bath"></i> <%= apartment.bathrooms %>
+                      </p>
+                      
+                      <% if apartment.available? %>
+                        <span class="badge badge-success">Available</span>
+                      <% else %>
+                        <span class="badge badge-secondary">Not Available</span>
+                      <% end %>
+                    </div>
+                    
+                    <div class="card-footer">
+                      <%= link_to 'View', apartment_path(apartment), class: 'btn btn-sm btn-primary' %>
+                      <% if current_user == @user %>
+                        <%= link_to 'Edit', edit_apartment_path(apartment), class: 'btn btn-sm btn-outline-secondary' %>
+                        <%= link_to 'Delete', apartment_path(apartment), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-outline-danger' %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-5">
+              <i class="fa fa-home fa-4x text-muted mb-3"></i>
+              <h4>No apartment listings found</h4>
+              <% if current_user == @user %>
+                <p>You haven't posted any apartment listings yet.</p>
+                <%= link_to 'Post Your First Apartment', new_apartment_path, class: 'btn btn-primary mt-2' %>
+              <% else %>
+                <p><%= @user.name %> hasn't posted any apartment listings yet.</p>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

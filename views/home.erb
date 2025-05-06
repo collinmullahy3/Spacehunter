@@ -1,0 +1,83 @@
+<div class="header-section mb-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-7">
+        <h1 class="display-4">Find Your Perfect Apartment</h1>
+        <p class="lead">Browse high-quality listings with detailed filters to find your ideal home.</p>
+        <a href="/apartments" class="btn btn-primary btn-lg">Browse Apartments</a>
+      </div>
+      <div class="col-md-5">
+        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="img-fluid rounded" alt="Apartment Interior">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h2 class="mb-4">Featured Apartments</h2>
+  
+  <div class="row">
+    <% @featured_apartments.each do |apartment| %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 apartment-card">
+          <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="card-img-top" style="height: 200px; object-fit: cover;">
+          
+          <div class="card-body">
+            <h5 class="card-title"><%= h apartment[:title] %></h5>
+            <p class="card-text text-muted"><%= h apartment[:city] %>, <%= h apartment[:state] %></p>
+            
+            <div class="mb-2">
+              <span class="badge bg-primary"><%= apartment[:bedrooms] %> <%= apartment[:bedrooms] == 1 ? 'Bedroom' : 'Bedrooms' %></span>
+              <span class="badge bg-info text-dark"><%= apartment[:bathrooms] %> <%= apartment[:bathrooms] == 1 ? 'Bathroom' : 'Bathrooms' %></span>
+            </div>
+            
+            <p class="card-text"><%= h apartment[:description][0..100] %>...</p>
+            
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="text-success mb-0">$<%= number_with_precision(apartment[:price]) %></h5>
+              <a href="/apartments/<%= apartment[:id] %>" class="btn btn-sm btn-outline-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <div class="text-center mb-5">
+    <a href="/apartments" class="btn btn-primary">View All Apartments</a>
+  </div>
+  
+  <hr>
+  
+  <div class="row mt-5">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-search fa-3x mb-3 text-primary"></i>
+          <h4 class="card-title">Search Easily</h4>
+          <p class="card-text">Filter by price, location, number of bedrooms, and many other features to find your perfect apartment.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-home fa-3x mb-3 text-primary"></i>
+          <h4 class="card-title">Detailed Listings</h4>
+          <p class="card-text">View high-quality photos, detailed descriptions, and complete amenity lists for each apartment.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-user-check fa-3x mb-3 text-primary"></i>
+          <h4 class="card-title">Trusted Landlords</h4>
+          <p class="card-text">All landlords are verified and rated by previous tenants to ensure a positive renting experience.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

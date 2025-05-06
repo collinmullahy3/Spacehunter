@@ -1,0 +1,7 @@
+<div class="mb-4">
+  <%= link_to "&laquo; Back to all apartments".html_safe, apartments_path, class: "btn btn-outline-secondary" %>
+</div>
+
+<h1>Add New Apartment</h1>
+
+<%= render 'form', apartment: @apartment %>

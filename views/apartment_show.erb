@@ -1,0 +1,102 @@
+<div class="mb-4">
+  <a href="/apartments" class="text-decoration-none">&lt; Back to All Apartments</a>
+</div>
+
+<div class="row mb-4">
+  <div class="col-lg-8">
+    <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="img-fluid rounded" style="width: 100%; height: 500px; object-fit: cover;">
+  </div>
+  
+  <div class="col-lg-4">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Price & Details</h5>
+        
+        <h2 class="text-primary mb-3">$<%= number_with_precision(@apartment[:price]) %>/month</h2>
+        
+        <hr>
+        
+        <div class="row mt-3">
+          <div class="col-6 mb-3">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-bed fa-fw me-2 text-muted"></i>
+              <div>
+                <small class="text-muted d-block">Bedrooms</small>
+                <strong><%= @apartment[:bedrooms] %></strong>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 mb-3">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-bath fa-fw me-2 text-muted"></i>
+              <div>
+                <small class="text-muted d-block">Bathrooms</small>
+                <strong><%= @apartment[:bathrooms] %></strong>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 mb-3">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-ruler-combined fa-fw me-2 text-muted"></i>
+              <div>
+                <small class="text-muted d-block">Square Feet</small>
+                <strong><%= @apartment[:square_feet] ? "#{@apartment[:square_feet]} sq ft" : "N/A" %></strong>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 mb-3">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-calendar-day fa-fw me-2 text-muted"></i>
+              <div>
+                <small class="text-muted d-block">Available From</small>
+                <strong><%= @apartment[:available_date] || "Now" %></strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <hr>
+        
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary btn-lg">Schedule a Tour</button>
+          <button class="btn btn-outline-primary">Apply Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h2 class="card-title mb-4"><%= h @apartment[:title] %></h2>
+        
+        <p class="text-muted mb-4">
+          <i class="fas fa-map-marker-alt me-2"></i>
+          <%= h @apartment[:address] %>, <%= h @apartment[:city] %>, <%= h @apartment[:state] %> <%= h @apartment[:zip] %>
+        </p>
+        
+        <h5 class="mb-3">Description</h5>
+        <p class="mb-4"><%= h @apartment[:description] %></p>
+      </div>
+    </div>
+    
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="mb-3">Location</h5>
+        <div class="ratio ratio-16x9">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.30596670663!2d-74.25986582652897!3d40.697149419826654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1619826407988!5m2!1sen!2sus" 
+                  style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-4">
+    <!-- Contact information or additional details can be added here -->
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="jumbotron bg-dark text-white">
+  <div class="container">
+    <h1 class="display-4">Find Your Perfect Apartment</h1>
+    <p class="lead">Browse thousands of listings with detailed filters to find your ideal home.</p>
+    <%= link_to "Browse Apartments", apartments_path, class: "btn btn-primary btn-lg" %>
+    <% if !user_signed_in? %>
+      <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-outline-light btn-lg ml-2" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="container">
+  <h2 class="mb-4">Featured Apartments</h2>
+  
+  <div class="row">
+    <% @featured_apartments.each do |apartment| %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <% if apartment.images.attached? %>
+            <%= image_tag apartment.images.first, class: "card-img-top", style: "height: 200px; object-fit: cover;" %>
+          <% else %>
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+              <span class="text-muted">No image available</span>
+            </div>
+          <% end %>
+          
+          <div class="card-body">
+            <h5 class="card-title"><%= apartment.title %></h5>
+            <p class="card-text text-muted"><%= apartment.city %>, <%= apartment.state %></p>
+            
+            <div class="mb-2">
+              <span class="badge badge-primary"><%= apartment.bedrooms %> <%= apartment.bedrooms == 1 ? 'Bedroom' : 'Bedrooms' %></span>
+              <span class="badge badge-info"><%= apartment.bathrooms %> <%= apartment.bathrooms == 1 ? 'Bathroom' : 'Bathrooms' %></span>
+            </div>
+            
+            <p class="card-text"><%= truncate(apartment.description, length: 100) %></p>
+            
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="text-success mb-0">$<%= number_with_precision(apartment.price, precision: 2, delimiter: ',') %></h5>
+              <%= link_to "View Details", apartment_path(apartment), class: "btn btn-sm btn-outline-primary" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <div class="text-center mb-5">
+    <%= link_to "View All Apartments", apartments_path, class: "btn btn-primary" %>
+  </div>
+  
+  <hr>
+  
+  <div class="row mt-5">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-search fa-3x mb-3 text-primary"></i>
+          <h4 class="card-title">Search Easily</h4>
+          <p class="card-text">Filter by price, location, number of bedrooms, and many other features to find your perfect apartment.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-home fa-3x mb-3 text-primary"></i>
+          <h4 class="card-title">Detailed Listings</h4>
+          <p class="card-text">View high-quality photos, detailed descriptions, and complete amenity lists for each apartment.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-user-check fa-3x mb-3 text-primary"></i>
+          <h4 class="card-title">Trusted Landlords</h4>
+          <p class="card-text">All landlords are verified and rated by previous tenants to ensure a positive renting experience.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
