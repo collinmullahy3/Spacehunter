@@ -18,7 +18,15 @@ APARTMENTS = [
     neighborhood: "Downtown",
     pet_friendly: true,
     parking: "Available for $250/month",
-    image_url: "/images/apt1.jpg" # Would point to an actual image if we had one
+    image_url: "/images/apt1.jpg", # Would point to an actual image if we had one
+    property_type: "Condo",
+    lease_term: "12 Months",
+    utilities_included: ["Water", "Heat"],
+    amenities: ["Elevator", "Doorman", "Fitness Center", "Rooftop Deck"],
+    status: "Available",
+    last_updated: "2023-09-01",
+    broker_fee: true,
+    security_deposit: 3500
   },
   {
     id: 2,
@@ -34,7 +42,15 @@ APARTMENTS = [
     neighborhood: "Midtown",
     pet_friendly: false,
     parking: "Street parking only",
-    image_url: "/images/apt2.jpg"
+    image_url: "/images/apt2.jpg",
+    property_type: "Apartment",
+    lease_term: "12-24 Months",
+    utilities_included: ["Water"],
+    amenities: ["Laundry in Building", "Rooftop Access"],
+    status: "Available",
+    last_updated: "2023-09-05",
+    broker_fee: false,
+    security_deposit: 1800
   },
   {
     id: 3,
@@ -50,7 +66,15 @@ APARTMENTS = [
     neighborhood: "Bedford-Stuyvesant",
     pet_friendly: true,
     parking: "Garage available for $200/month",
-    image_url: "/images/apt3.jpg"
+    image_url: "/images/apt3.jpg",
+    property_type: "Townhouse",
+    lease_term: "12 Months",
+    utilities_included: ["None"],
+    amenities: ["Backyard", "Basement Storage"],
+    status: "Available",
+    last_updated: "2023-08-20",
+    broker_fee: true,
+    security_deposit: 5600
   },
   {
     id: 4,
@@ -66,7 +90,15 @@ APARTMENTS = [
     neighborhood: "East Village",
     pet_friendly: true,
     parking: "None",
-    image_url: "/images/apt4.jpg"
+    image_url: "/images/apt4.jpg",
+    property_type: "Apartment",
+    lease_term: "12 Months",
+    utilities_included: ["Water", "Gas"],
+    amenities: ["Bicycle Storage", "Renovated"],
+    status: "Available",
+    last_updated: "2023-07-10",
+    broker_fee: false,
+    security_deposit: 2400
   },
   {
     id: 5,
@@ -82,9 +114,42 @@ APARTMENTS = [
     neighborhood: "Upper West Side",
     pet_friendly: true,
     parking: "Garage in building",
-    image_url: "/images/apt5.jpg"
+    image_url: "/images/apt5.jpg",
+    property_type: "Co-op",
+    lease_term: "24 Months",
+    utilities_included: ["Heat", "Water"],
+    amenities: ["Elevator", "Doorman", "Live-in Super", "Laundry Room"],
+    status: "Available",
+    last_updated: "2023-08-15",
+    broker_fee: true,
+    security_deposit: 8400
   }
 ]
+
+# Simple user authentication
+USERS = [
+  {
+    id: 1,
+    username: "admin",
+    password: "admin123", # In a real app, this would be hashed
+    role: "admin"
+  },
+  {
+    id: 2,
+    username: "landlord",
+    password: "property456",
+    role: "landlord"
+  },
+  {
+    id: 3,
+    username: "user",
+    password: "renter789",
+    role: "renter"
+  }
+]
+
+# Global variable to track current user session (in a real app, use proper session management)
+$current_user = nil
 
 # Helper method to parse query parameters
 def parse_query_params(query_string)
@@ -114,6 +179,12 @@ def filter_apartments(params)
     filtered = filtered.select { |apt| apt[:price] <= max_price }
   end
   
+  # Filter by min price
+  if params['min_price'] && !params['min_price'].empty?
+    min_price = params['min_price'].to_i
+    filtered = filtered.select { |apt| apt[:price] >= min_price }
+  end
+  
   # Filter by neighborhood
   if params['neighborhood'] && !params['neighborhood'].empty?
     neighborhood = params['neighborhood'].downcase
@@ -125,7 +196,133 @@ def filter_apartments(params)
     filtered = filtered.select { |apt| apt[:pet_friendly] }
   end
   
+  # Filter by property type
+  if params['property_type'] && !params['property_type'].empty?
+    filtered = filtered.select { |apt| apt[:property_type] == params['property_type'] }
+  end
+  
+  # Filter by lease term
+  if params['lease_term'] && !params['lease_term'].empty?
+    filtered = filtered.select { |apt| apt[:lease_term].include?(params['lease_term']) }
+  end
+  
+  # Filter by amenities
+  if params['amenities'] && !params['amenities'].empty?
+    amenity = params['amenities'].downcase
+    filtered = filtered.select { |apt| apt[:amenities].any? { |a| a.downcase.include?(amenity) } }
+  end
+  
+  # Filter by square footage
+  if params['min_square_feet'] && !params['min_square_feet'].empty?
+    min_sq_ft = params['min_square_feet'].to_i
+    filtered = filtered.select { |apt| apt[:square_feet] >= min_sq_ft }
+  end
+  
+  # Filter by date available
+  if params['available_from'] && !params['available_from'].empty?
+    # In a real app, we would properly compare dates
+    # For simplicity, we'll just do a string comparison for now
+    filtered = filtered.select { |apt| apt[:available_from] >= params['available_from'] }
+  end
+  
+  # Filter by broker fee
+  if params['no_broker_fee'] == 'true'
+    filtered = filtered.select { |apt| !apt[:broker_fee] }
+  end
+  
   filtered
+end
+
+# Helper method for authentication
+def authenticate(username, password)
+  user = USERS.find { |u| u[:username] == username && u[:password] == password }
+  $current_user = user
+  !user.nil?
+end
+
+# Helper method to check if user is admin
+def admin?
+  $current_user && $current_user[:role] == "admin"
+end
+
+# Helper method to check if user is landlord
+def landlord?
+  $current_user && ($current_user[:role] == "landlord" || $current_user[:role] == "admin")
+end
+
+# Helper method for adding a new apartment
+def add_apartment(params)
+  new_id = APARTMENTS.map { |apt| apt[:id] }.max + 1
+  
+  new_apartment = {
+    id: new_id,
+    title: params['title'] || "New Listing",
+    location: params['location'] || "Address not provided",
+    price: params['price'] ? params['price'].to_i : 0,
+    bedrooms: params['bedrooms'] ? params['bedrooms'].to_i : 0,
+    bathrooms: params['bathrooms'] ? params['bathrooms'].to_f : 0,
+    square_feet: params['square_feet'] ? params['square_feet'].to_i : 0,
+    description: params['description'] || "No description provided",
+    features: params['features'] ? params['features'].split(',').map(&:strip) : [],
+    available_from: params['available_from'] || "Immediately",
+    neighborhood: params['neighborhood'] || "Not specified",
+    pet_friendly: params['pet_friendly'] == "true",
+    parking: params['parking'] || "None",
+    image_url: params['image_url'] || "/images/default.jpg",
+    property_type: params['property_type'] || "Apartment",
+    lease_term: params['lease_term'] || "12 Months",
+    utilities_included: params['utilities_included'] ? params['utilities_included'].split(',').map(&:strip) : [],
+    amenities: params['amenities'] ? params['amenities'].split(',').map(&:strip) : [],
+    status: "Available",
+    last_updated: Time.now.strftime("%Y-%m-%d"),
+    broker_fee: params['broker_fee'] == "true",
+    security_deposit: params['security_deposit'] ? params['security_deposit'].to_i : 0
+  }
+  
+  APARTMENTS << new_apartment
+  new_apartment
+end
+
+# Helper method for updating an apartment
+def update_apartment(id, params)
+  apartment = APARTMENTS.find { |apt| apt[:id] == id.to_i }
+  return nil unless apartment
+  
+  # Update fields that are provided
+  apartment[:title] = params['title'] if params['title']
+  apartment[:location] = params['location'] if params['location']
+  apartment[:price] = params['price'].to_i if params['price']
+  apartment[:bedrooms] = params['bedrooms'].to_i if params['bedrooms']
+  apartment[:bathrooms] = params['bathrooms'].to_f if params['bathrooms']
+  apartment[:square_feet] = params['square_feet'].to_i if params['square_feet']
+  apartment[:description] = params['description'] if params['description']
+  apartment[:features] = params['features'].split(',').map(&:strip) if params['features']
+  apartment[:available_from] = params['available_from'] if params['available_from']
+  apartment[:neighborhood] = params['neighborhood'] if params['neighborhood']
+  apartment[:pet_friendly] = params['pet_friendly'] == "true" if params.key?('pet_friendly')
+  apartment[:parking] = params['parking'] if params['parking']
+  apartment[:image_url] = params['image_url'] if params['image_url']
+  apartment[:property_type] = params['property_type'] if params['property_type']
+  apartment[:lease_term] = params['lease_term'] if params['lease_term']
+  apartment[:utilities_included] = params['utilities_included'].split(',').map(&:strip) if params['utilities_included']
+  apartment[:amenities] = params['amenities'].split(',').map(&:strip) if params['amenities']
+  apartment[:status] = params['status'] if params['status']
+  apartment[:broker_fee] = params['broker_fee'] == "true" if params.key?('broker_fee')
+  apartment[:security_deposit] = params['security_deposit'].to_i if params['security_deposit']
+  
+  # Update the last_updated timestamp
+  apartment[:last_updated] = Time.now.strftime("%Y-%m-%d")
+  
+  apartment
+end
+
+# Helper method for deleting an apartment
+def delete_apartment(id)
+  index = APARTMENTS.find_index { |apt| apt[:id] == id.to_i }
+  return false unless index
+  
+  APARTMENTS.delete_at(index)
+  true
 end
 
 # Create a simple TCP server that responds to HTTP requests
@@ -155,7 +352,375 @@ loop do
   end
   
   # Set up the response
-  if path == "/"
+  if path == "/login"
+    response_content = "<!DOCTYPE html>
+<html>
+<head>
+  <title>Login - RealtyMonster</title>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+    h1, h2, h3 { color: #2c3e50; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header .container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 24px; font-weight: bold; }
+    .login-container { max-width: 400px; margin: 50px auto; background-color: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; width: 100%; }
+    .btn:hover { background: #2980b9; }
+    .error-message { color: #e74c3c; margin-bottom: 15px; }
+    .footer { background-color: #34495e; color: white; padding: 30px 0; margin-top: 50px; }
+    .back-link { display: block; margin-top: 20px; text-align: center; color: #3498db; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header class='header'>
+    <div class='container'>
+      <div class='logo'>RealtyMonster</div>
+    </div>
+  </header>
+  
+  <div class='container'>
+    <div class='login-container'>
+      <h2>Login to RealtyMonster</h2>
+      
+      <form action='/authenticate' method='post'>
+        <div class='form-group'>
+          <label for='username'>Username</label>
+          <input type='text' id='username' name='username' required>
+        </div>
+        <div class='form-group'>
+          <label for='password'>Password</label>
+          <input type='password' id='password' name='password' required>
+        </div>
+        
+        <button type='submit' class='btn'>Login</button>
+      </form>
+      
+      <a href='/' class='back-link'>Back to Home</a>
+    </div>
+  </div>
+  
+  <footer class='footer'>
+    <div class='container'>
+      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>"
+  elsif path == "/admin"
+    response_content = "<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Portal - RealtyMonster</title>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
+    h1, h2, h3 { color: #2c3e50; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header .container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 24px; font-weight: bold; }
+    .admin-panel { display: flex; gap: 30px; margin-bottom: 40px; }
+    .admin-sidebar { flex: 1; background-color: #f8f9fa; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .admin-content { flex: 3; }
+    .sidebar-menu { list-style-type: none; padding: 0; margin: 0; }
+    .sidebar-menu li { margin-bottom: 10px; }
+    .sidebar-menu a { display: block; padding: 10px; text-decoration: none; color: #333; border-radius: 4px; transition: background-color 0.3s; }
+    .sidebar-menu a:hover, .sidebar-menu a.active { background-color: #e0e0e0; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; }
+    .btn:hover { background: #2980b9; }
+    .btn-green { background-color: #27ae60; }
+    .btn-green:hover { background-color: #219653; }
+    .btn-red { background-color: #e74c3c; }
+    .btn-red:hover { background-color: #c0392b; }
+    .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+    .table th, .table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+    .table th { background-color: #f8f9fa; font-weight: bold; }
+    .table tbody tr:hover { background-color: #f8f9fa; }
+    .badge { display: inline-block; padding: 5px 10px; border-radius: 50px; font-size: 12px; font-weight: bold; }
+    .badge-success { background-color: #e6f7ee; color: #27ae60; }
+    .badge-warning { background-color: #fef5e7; color: #f39c12; }
+    .badge-danger { background-color: #fae9e7; color: #e74c3c; }
+    .action-buttons { display: flex; gap: 5px; }
+    .login-prompt { text-align: center; margin: 100px 0; }
+    .footer { background-color: #34495e; color: white; padding: 30px 0; margin-top: 50px; }
+  </style>
+</head>
+<body>
+  <header class='header'>
+    <div class='container'>
+      <div class='logo'>RealtyMonster</div>
+    </div>
+  </header>
+  
+  <div class='container'>
+    <h1>Admin Portal</h1>
+    
+    <div class='admin-panel'>
+      <div class='admin-sidebar'>
+        <ul class='sidebar-menu'>
+          <li><a href='/admin' class='active'>Dashboard</a></li>
+          <li><a href='/admin/apartments'>Apartments</a></li>
+          <li><a href='/admin/users'>Users</a></li>
+          <li><a href='/admin/inquiries'>Inquiries</a></li>
+          <li><a href='/admin/settings'>Settings</a></li>
+          <li><a href='/logout'>Logout</a></li>
+        </ul>
+      </div>
+      
+      <div class='admin-content'>
+        <div class='admin-header'>
+          <h2>Apartment Listings</h2>
+          <a href='/admin/apartments/new' class='btn btn-green'>Add New Listing</a>
+        </div>
+        
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Location</th>
+              <th>Price</th>
+              <th>Bedrooms</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            #{APARTMENTS.map { |apt| "
+            <tr>
+              <td>#{apt[:id]}</td>
+              <td>#{apt[:title]}</td>
+              <td>#{apt[:neighborhood]}</td>
+              <td>$#{apt[:price]}</td>
+              <td>#{apt[:bedrooms] == 0 ? 'Studio' : apt[:bedrooms]}</td>
+              <td><span class='badge badge-success'>#{apt[:status]}</span></td>
+              <td class='action-buttons'>
+                <a href='/admin/apartments/#{apt[:id]}/edit' class='btn' style='padding: 5px 10px; font-size: 12px;'>Edit</a>
+                <a href='/admin/apartments/#{apt[:id]}/delete' class='btn btn-red' style='padding: 5px 10px; font-size: 12px;'>Delete</a>
+              </td>
+            </tr>" }.join("\n            ")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <footer class='footer'>
+    <div class='container'>
+      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>"
+  elsif path == "/admin/apartments/new"
+    response_content = "<!DOCTYPE html>
+<html>
+<head>
+  <title>Add New Apartment - RealtyMonster</title>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
+    h1, h2, h3 { color: #2c3e50; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .header { background-color: #34495e; color: white; padding: 20px 0; margin-bottom: 30px; }
+    .header .container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 24px; font-weight: bold; }
+    .admin-panel { display: flex; gap: 30px; margin-bottom: 40px; }
+    .admin-sidebar { flex: 1; background-color: #f8f9fa; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .admin-content { flex: 3; }
+    .sidebar-menu { list-style-type: none; padding: 0; margin: 0; }
+    .sidebar-menu li { margin-bottom: 10px; }
+    .sidebar-menu a { display: block; padding: 10px; text-decoration: none; color: #333; border-radius: 4px; transition: background-color 0.3s; }
+    .sidebar-menu a:hover, .sidebar-menu a.active { background-color: #e0e0e0; }
+    .form-card { background-color: #f8f9fa; border-radius: 8px; padding: 30px; margin-bottom: 30px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+    .form-group textarea { min-height: 150px; }
+    .form-row { display: flex; gap: 20px; }
+    .form-row .form-group { flex: 1; }
+    .checkbox-group { display: flex; align-items: center; }
+    .checkbox-group input { width: auto; margin-right: 10px; }
+    .btn { display: inline-block; background: #3498db; color: white; padding: 10px 15px; 
+           text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; }
+    .btn:hover { background: #2980b9; }
+    .btn-green { background-color: #27ae60; }
+    .btn-green:hover { background-color: #219653; }
+    .footer { background-color: #34495e; color: white; padding: 30px 0; margin-top: 50px; }
+    .back-link { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header class='header'>
+    <div class='container'>
+      <div class='logo'>RealtyMonster</div>
+    </div>
+  </header>
+  
+  <div class='container'>
+    <a href='/admin' class='back-link'>&larr; Back to Admin Dashboard</a>
+    
+    <h1>Add New Apartment Listing</h1>
+    
+    <div class='admin-panel'>
+      <div class='admin-sidebar'>
+        <ul class='sidebar-menu'>
+          <li><a href='/admin'>Dashboard</a></li>
+          <li><a href='/admin/apartments' class='active'>Apartments</a></li>
+          <li><a href='/admin/users'>Users</a></li>
+          <li><a href='/admin/inquiries'>Inquiries</a></li>
+          <li><a href='/admin/settings'>Settings</a></li>
+          <li><a href='/logout'>Logout</a></li>
+        </ul>
+      </div>
+      
+      <div class='admin-content'>
+        <form action='/admin/apartments/create' method='post' class='form-card'>
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='title'>Title</label>
+              <input type='text' id='title' name='title' required>
+            </div>
+            <div class='form-group'>
+              <label for='location'>Full Address</label>
+              <input type='text' id='location' name='location' required>
+            </div>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='neighborhood'>Neighborhood</label>
+              <input type='text' id='neighborhood' name='neighborhood' required>
+            </div>
+            <div class='form-group'>
+              <label for='price'>Monthly Rent ($)</label>
+              <input type='number' id='price' name='price' min='0' required>
+            </div>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='bedrooms'>Bedrooms</label>
+              <select id='bedrooms' name='bedrooms' required>
+                <option value='0'>Studio</option>
+                <option value='1'>1 Bedroom</option>
+                <option value='2'>2 Bedrooms</option>
+                <option value='3'>3 Bedrooms</option>
+                <option value='4'>4 Bedrooms</option>
+                <option value='5'>5+ Bedrooms</option>
+              </select>
+            </div>
+            <div class='form-group'>
+              <label for='bathrooms'>Bathrooms</label>
+              <select id='bathrooms' name='bathrooms' required>
+                <option value='1'>1 Bathroom</option>
+                <option value='1.5'>1.5 Bathrooms</option>
+                <option value='2'>2 Bathrooms</option>
+                <option value='2.5'>2.5 Bathrooms</option>
+                <option value='3'>3 Bathrooms</option>
+                <option value='3.5'>3.5 Bathrooms</option>
+                <option value='4'>4+ Bathrooms</option>
+              </select>
+            </div>
+            <div class='form-group'>
+              <label for='square_feet'>Square Feet</label>
+              <input type='number' id='square_feet' name='square_feet' min='0' required>
+            </div>
+          </div>
+          
+          <div class='form-group'>
+            <label for='description'>Description</label>
+            <textarea id='description' name='description' required></textarea>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='features'>Features (comma separated)</label>
+              <input type='text' id='features' name='features' placeholder='e.g. Hardwood floors, Stainless steel appliances, etc.'>
+            </div>
+            <div class='form-group'>
+              <label for='amenities'>Amenities (comma separated)</label>
+              <input type='text' id='amenities' name='amenities' placeholder='e.g. Gym, Doorman, Elevator, etc.'>
+            </div>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='property_type'>Property Type</label>
+              <select id='property_type' name='property_type'>
+                <option value='Apartment'>Apartment</option>
+                <option value='Condo'>Condo</option>
+                <option value='Townhouse'>Townhouse</option>
+                <option value='Co-op'>Co-op</option>
+              </select>
+            </div>
+            <div class='form-group'>
+              <label for='lease_term'>Lease Term</label>
+              <select id='lease_term' name='lease_term'>
+                <option value='12 Months'>12 Months</option>
+                <option value='24 Months'>24 Months</option>
+                <option value='Month-to-Month'>Month-to-Month</option>
+              </select>
+            </div>
+            <div class='form-group'>
+              <label for='available_from'>Available From</label>
+              <input type='date' id='available_from' name='available_from'>
+            </div>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='parking'>Parking</label>
+              <input type='text' id='parking' name='parking' placeholder='e.g. Street parking, Garage, etc.'>
+            </div>
+            <div class='form-group'>
+              <label for='utilities_included'>Utilities Included (comma separated)</label>
+              <input type='text' id='utilities_included' name='utilities_included' placeholder='e.g. Water, Heat, etc.'>
+            </div>
+          </div>
+          
+          <div class='form-row'>
+            <div class='form-group'>
+              <label for='security_deposit'>Security Deposit ($)</label>
+              <input type='number' id='security_deposit' name='security_deposit' min='0'>
+            </div>
+            <div class='form-group checkbox-group'>
+              <input type='checkbox' id='broker_fee' name='broker_fee' value='true'>
+              <label for='broker_fee'>Broker Fee Required</label>
+            </div>
+            <div class='form-group checkbox-group'>
+              <input type='checkbox' id='pet_friendly' name='pet_friendly' value='true'>
+              <label for='pet_friendly'>Pet Friendly</label>
+            </div>
+          </div>
+          
+          <button type='submit' class='btn btn-green'>Create Listing</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <footer class='footer'>
+    <div class='container'>
+      <p>&copy; 2025 RealtyMonster. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>"
+  elsif path == "/"
     response_content = "<!DOCTYPE html>
 <html>
 <head>
@@ -205,7 +770,13 @@ loop do
   </header>
   
   <div class='container'>
-    <h1>Find Your Perfect Apartment</h1>
+    <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;'>
+      <h1>Find Your Perfect Apartment</h1>
+      <div>
+        <a href='/login' class='btn' style='margin-right: 10px;'>Login</a>
+        <a href='/admin' class='btn' style='background-color: #e67e22;'>Admin Portal</a>
+      </div>
+    </div>
     
     <div class='search-container'>
       <form action='/' method='get'>
@@ -231,15 +802,60 @@ loop do
         </div>
         
         <div class='form-row'>
+          <div class='form-group'>
+            <label for='min_price'>Minimum Price</label>
+            <input type='number' id='min_price' name='min_price' placeholder='Enter minimum monthly rent' value='#{query_params['min_price'] || ''}'>
+          </div>
+          <div class='form-group'>
+            <label for='property_type'>Property Type</label>
+            <select id='property_type' name='property_type'>
+              <option value='' #{query_params['property_type'].nil? || query_params['property_type'].empty? ? 'selected' : ''}>Any</option>
+              <option value='Apartment' #{query_params['property_type'] == 'Apartment' ? 'selected' : ''}>Apartment</option>
+              <option value='Condo' #{query_params['property_type'] == 'Condo' ? 'selected' : ''}>Condo</option>
+              <option value='Townhouse' #{query_params['property_type'] == 'Townhouse' ? 'selected' : ''}>Townhouse</option>
+              <option value='Co-op' #{query_params['property_type'] == 'Co-op' ? 'selected' : ''}>Co-op</option>
+            </select>
+          </div>
+          <div class='form-group'>
+            <label for='min_square_feet'>Minimum Square Feet</label>
+            <input type='number' id='min_square_feet' name='min_square_feet' placeholder='Minimum square footage' value='#{query_params['min_square_feet'] || ''}'>
+          </div>
+        </div>
+        
+        <div class='form-row'>
+          <div class='form-group'>
+            <label for='amenities'>Amenities</label>
+            <input type='text' id='amenities' name='amenities' placeholder='E.g. Elevator, Doorman, etc.' value='#{query_params['amenities'] || ''}'>
+          </div>
+          <div class='form-group'>
+            <label for='available_from'>Available From</label>
+            <input type='date' id='available_from' name='available_from' value='#{query_params['available_from'] || ''}'>
+          </div>
+          <div class='form-group'>
+            <label for='lease_term'>Lease Term</label>
+            <select id='lease_term' name='lease_term'>
+              <option value='' #{query_params['lease_term'].nil? || query_params['lease_term'].empty? ? 'selected' : ''}>Any</option>
+              <option value='12 Months' #{query_params['lease_term'] == '12 Months' ? 'selected' : ''}>12 Months</option>
+              <option value='24 Months' #{query_params['lease_term'] == '24 Months' ? 'selected' : ''}>24 Months</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class='form-row'>
           <div class='form-group checkbox-group'>
             <input type='checkbox' id='pet_friendly' name='pet_friendly' value='true' #{query_params['pet_friendly'] == 'true' ? 'checked' : ''}>
             <label for='pet_friendly'>Pet Friendly</label>
+          </div>
+          <div class='form-group checkbox-group'>
+            <input type='checkbox' id='no_broker_fee' name='no_broker_fee' value='true' #{query_params['no_broker_fee'] == 'true' ? 'checked' : ''}>
+            <label for='no_broker_fee'>No Broker Fee</label>
           </div>
         </div>
         
         <div class='form-row'>
           <button type='submit' class='btn btn-search'>Search</button>
           <a href='/' class='btn btn-reset'>Reset</a>
+          <a href='/advanced-search' class='btn' style='background-color: #9b59b6;'>Advanced Search</a>
         </div>
       </form>
     </div>
