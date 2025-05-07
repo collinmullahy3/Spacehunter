@@ -124,9 +124,21 @@ def parse_property(prop_elem):
     else:
         property_data['parking'] = 'Street Parking'
     
-    # Images - we don't have image URLs in the XML, but we'd need to handle them
-    # Use dummy image for now based on property ID
-    property_data['image_url'] = f"/images/apt{property_data['id'] % 5 + 1}.jpg"
+    # Parse images from the media element
+    media = prop_elem.find('media')
+    if media is not None:
+        photos = media.findall('photo')
+        if photos:
+            # Use the first photo (position 0 if available, otherwise just the first in the list)
+            position_0_photos = [p for p in photos if p.get('position') == '0']
+            first_photo = position_0_photos[0] if position_0_photos else photos[0]
+            property_data['image_url'] = first_photo.get('url')
+        else:
+            # Fallback to default image if no photos available
+            property_data['image_url'] = f"/images/apt{property_data['id'] % 5 + 1}.jpg"
+    else:
+        # Fallback to default image if no media element
+        property_data['image_url'] = f"/images/apt{property_data['id'] % 5 + 1}.jpg"
     
     return property_data
 
