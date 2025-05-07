@@ -170,9 +170,9 @@ loop do
           .checkbox-group { display: flex; align-items: center; }
           .checkbox-group input { width: auto; margin-right: 10px; }
           .checkbox-group input:checked { accent-color: #f7b419; }
-          .top-section { display: flex; gap: 30px; margin-bottom: 30px; }
-          .filters-container { flex: 3; }
-          .map-container { flex: 4; height: 600px; border-radius: 8px; overflow: hidden; }
+          .top-section { display: flex; flex-direction: column; gap: 30px; margin-bottom: 30px; }
+          .filters-container { width: 100%; }
+          .map-container { width: 100%; height: 600px; border-radius: 8px; overflow: hidden; }
           #map { width: 100%; height: 100%; border-radius: 8px; border: 1px solid #e0e0e0; }
           .apartments-section { width: 100%; }
         </style>
@@ -288,17 +288,12 @@ loop do
       apartments.each do |apt|
         image_url = apt[:image_url].to_s
         
-        # URLs sometimes need escaping to work in CSS background-image
-        if image_url.include?('"') || image_url.include?("'")
-          # For problematic URLs, use a fallback
-          image_style = "background-color: #f7b419;"
-        else
-          image_style = "background-image: url('#{image_url}'); background-color: #f7b419;"
-        end
-        
+        # Use img tag instead of background-image to handle complex URLs
         response_content += <<~HTML
               <div class='apartment-card'>
-                <div class='apartment-img' style='#{image_style}'></div>
+                <div class='apartment-img'>
+                  <img src="#{image_url}" alt="#{apt[:title]}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
                 <div class='apartment-details'>
                   <h3>#{apt[:title]}</h3>
                   <div class='apartment-price'>$#{apt[:price]}/month</div>
@@ -398,13 +393,8 @@ loop do
     apartment = APARTMENTS.find { |apt| apt[:id] == apartment_id }
     
     if apartment
-      # Process the image URL to avoid potential escaping issues
+      # Get the image URL for the apartment
       image_url = apartment[:image_url].to_s
-      if image_url.include?('"') || image_url.include?("'")
-        image_style = "background-color: #f7b419;"
-      else
-        image_style = "background-image: url('#{image_url}'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #f7b419;"
-      end
       
       response_content = <<~HTML
         <!DOCTYPE html>
@@ -465,7 +455,9 @@ loop do
               <div class='apartment-price'>$#{apartment[:price]}/month</div>
             </div>
             
-            <div class='apartment-image' style='#{image_style}'></div>
+            <div class='apartment-image'>
+              <img src="#{image_url}" alt="#{apartment[:title]}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+            </div>
             
             <div class='apartment-grid'>
               <div>
