@@ -575,6 +575,376 @@ loop do
         </html>
       HTML
     end
+  elsif path == "/admin" || path.start_with?("/admin/")
+    # Simple Admin Authentication (In a real app, we would use proper authentication)
+    admin_authenticated = true
+    
+    if admin_authenticated
+      current_tab = "properties"
+      
+      # Check if a specific tab is requested
+      if path == "/admin/users"
+        current_tab = "users"
+      elsif path == "/admin/settings"
+        current_tab = "settings"
+      end
+      
+      response_content = <<~HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>SpaceHunter Admin</title>
+          <meta charset='UTF-8'>
+          <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; background-color: #f5f5f5; }
+            h1, h2, h3 { color: #515151; }
+            .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+            .header { background-color: #f7b419; color: #515151; padding: 20px 0; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .header .container { display: flex; justify-content: space-between; align-items: center; }
+            .logo { font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+            .admin-panel { display: flex; gap: 30px; }
+            .sidebar { width: 250px; background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+            .main-content { flex: 1; background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+            .nav-link { display: block; padding: 12px 15px; color: #515151; text-decoration: none; border-radius: 4px; margin-bottom: 5px; font-weight: 500; }
+            .nav-link:hover { background-color: #f5f5f5; }
+            .nav-link.active { background-color: #f7b419; color: #515151; font-weight: bold; }
+            .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+            .stat-card { background-color: #f9f9f9; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; }
+            .stat-number { font-size: 36px; font-weight: bold; color: #f7b419; margin: 10px 0; }
+            .stat-label { font-size: 14px; color: #757575; }
+            .btn { display: inline-block; background: #f7b419; color: #515151; padding: 10px 15px; 
+                   text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 14px; 
+                   font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+            .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+            th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+            th { background-color: #f5f5f5; font-weight: bold; color: #515151; }
+            tr:hover { background-color: #f9f9f9; }
+            .actions { display: flex; gap: 10px; }
+            .edit-btn { color: #3498db; }
+            .delete-btn { color: #e74c3c; }
+            .tab-content { display: none; }
+            .tab-content.active { display: block; }
+            .form-group { margin-bottom: 15px; }
+            .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #515151; }
+            .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; color: #515151; }
+            .form-row { display: flex; gap: 15px; margin-bottom: 15px; }
+            .form-row .form-group { flex: 1; }
+          </style>
+        </head>
+        <body>
+          <header class='header'>
+            <div class='container'>
+              <div class='logo'>SpaceHunter Admin</div>
+              <div>
+                <a href='/' class='btn' style='margin-right: 10px;'>View Site</a>
+                <a href='/logout' class='btn' style='background-color: #515151; color: white;'>Logout</a>
+              </div>
+            </div>
+          </header>
+          
+          <div class='container'>
+            <div class='admin-panel'>
+              <div class='sidebar'>
+                <a href='/admin' class='nav-link #{current_tab == "properties" ? "active" : ""}'>Properties</a>
+                <a href='/admin/users' class='nav-link #{current_tab == "users" ? "active" : ""}'>Users</a>
+                <a href='/admin/settings' class='nav-link #{current_tab == "settings" ? "active" : ""}'>Settings</a>
+                <div style='margin-top: 30px;'>
+                  <a href='/admin/reports' class='nav-link'>Reports</a>
+                  <a href='/admin/inquiries' class='nav-link'>Inquiries</a>
+                </div>
+              </div>
+              
+              <div class='main-content'>
+                <div id='properties-tab' class='tab-content #{current_tab == "properties" ? "active" : ""}'>
+                  <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;'>
+                    <h2>Property Management</h2>
+                    <a href='/admin/properties/new' class='btn'>Add New Property</a>
+                  </div>
+                  
+                  <div class='stats-grid'>
+                    <div class='stat-card'>
+                      <div class='stat-label'>Total Properties</div>
+                      <div class='stat-number'>#{APARTMENTS.length}</div>
+                    </div>
+                    <div class='stat-card'>
+                      <div class='stat-label'>Active Listings</div>
+                      <div class='stat-number'>#{APARTMENTS.length}</div>
+                    </div>
+                    <div class='stat-card'>
+                      <div class='stat-label'>Avg. Rent Price</div>
+                      <div class='stat-number'>$#{APARTMENTS.map { |apt| apt[:price] }.sum / APARTMENTS.length}</div>
+                    </div>
+                    <div class='stat-card'>
+                      <div class='stat-label'>Inquiries This Month</div>
+                      <div class='stat-number'>24</div>
+                    </div>
+                  </div>
+                  
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Property</th>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Beds/Baths</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      #{APARTMENTS.first(10).map { |apt| 
+                        "<tr>
+                          <td>#{apt[:id]}</td>
+                          <td>#{apt[:title]}</td>
+                          <td>#{apt[:location]}</td>
+                          <td>$#{apt[:price]}</td>
+                          <td>#{apt[:bedrooms]}/#{apt[:bathrooms]}</td>
+                          <td class='actions'>
+                            <a href='/admin/properties/#{apt[:id]}/edit' class='edit-btn'>Edit</a>
+                            <a href='/admin/properties/#{apt[:id]}/delete' class='delete-btn'>Delete</a>
+                          </td>
+                        </tr>"
+                      }.join("\n                      ")}
+                    </tbody>
+                  </table>
+                  
+                  <div style='text-align: center;'>
+                    <a href='/admin/properties' class='btn'>View All Properties</a>
+                  </div>
+                </div>
+                
+                <div id='users-tab' class='tab-content #{current_tab == "users" ? "active" : ""}'>
+                  <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;'>
+                    <h2>User Management</h2>
+                    <a href='/admin/users/new' class='btn'>Add New User</a>
+                  </div>
+                  
+                  <div class='stats-grid'>
+                    <div class='stat-card'>
+                      <div class='stat-label'>Total Users</div>
+                      <div class='stat-number'>85</div>
+                    </div>
+                    <div class='stat-card'>
+                      <div class='stat-label'>New This Month</div>
+                      <div class='stat-number'>12</div>
+                    </div>
+                    <div class='stat-card'>
+                      <div class='stat-label'>Active Now</div>
+                      <div class='stat-number'>8</div>
+                    </div>
+                    <div class='stat-card'>
+                      <div class='stat-label'>Admins</div>
+                      <div class='stat-number'>3</div>
+                    </div>
+                  </div>
+                  
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>Admin User</td>
+                        <td>admin@spacehunter.com</td>
+                        <td>Administrator</td>
+                        <td>Jan 15, 2023</td>
+                        <td class='actions'>
+                          <a href='/admin/users/1/edit' class='edit-btn'>Edit</a>
+                          <a href='/admin/users/1/delete' class='delete-btn'>Delete</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>Jane Smith</td>
+                        <td>jane@example.com</td>
+                        <td>Agent</td>
+                        <td>Mar 22, 2023</td>
+                        <td class='actions'>
+                          <a href='/admin/users/2/edit' class='edit-btn'>Edit</a>
+                          <a href='/admin/users/2/delete' class='delete-btn'>Delete</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>John Doe</td>
+                        <td>john@example.com</td>
+                        <td>Customer</td>
+                        <td>Apr 10, 2023</td>
+                        <td class='actions'>
+                          <a href='/admin/users/3/edit' class='edit-btn'>Edit</a>
+                          <a href='/admin/users/3/delete' class='delete-btn'>Delete</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  
+                  <div style='text-align: center;'>
+                    <a href='/admin/users' class='btn'>View All Users</a>
+                  </div>
+                </div>
+                
+                <div id='settings-tab' class='tab-content #{current_tab == "settings" ? "active" : ""}'>
+                  <h2>System Settings</h2>
+                  
+                  <form action='/admin/settings/save' method='post'>
+                    <div class='form-row'>
+                      <div class='form-group'>
+                        <label for='site_name'>Site Name</label>
+                        <input type='text' id='site_name' name='site_name' value='SpaceHunter'>
+                      </div>
+                      <div class='form-group'>
+                        <label for='support_email'>Support Email</label>
+                        <input type='email' id='support_email' name='support_email' value='support@spacehunter.com'>
+                      </div>
+                    </div>
+                    
+                    <div class='form-group'>
+                      <label for='description'>Site Description</label>
+                      <textarea id='description' name='description' rows='3'>SpaceHunter is a premium apartment rental platform for finding your perfect home.</textarea>
+                    </div>
+                    
+                    <h3>Appearance</h3>
+                    <div class='form-row'>
+                      <div class='form-group'>
+                        <label for='primary_color'>Primary Color</label>
+                        <input type='color' id='primary_color' name='primary_color' value='#f7b419'>
+                      </div>
+                      <div class='form-group'>
+                        <label for='secondary_color'>Secondary Color</label>
+                        <input type='color' id='secondary_color' name='secondary_color' value='#515151'>
+                      </div>
+                    </div>
+                    
+                    <h3>API Integrations</h3>
+                    <div class='form-group'>
+                      <label for='google_maps_api_key'>Google Maps API Key</label>
+                      <input type='text' id='google_maps_api_key' name='google_maps_api_key' value='AIzaSyCVKSrcCGIsG5183AchUeq2js4HZSuIPIE'>
+                    </div>
+                    
+                    <div class='form-group'>
+                      <label for='enable_analytics'>Enable Analytics</label>
+                      <select id='enable_analytics' name='enable_analytics'>
+                        <option value='1' selected>Yes</option>
+                        <option value='0'>No</option>
+                      </select>
+                    </div>
+                    
+                    <button type='submit' class='btn'>Save Settings</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      HTML
+    else
+      # Admin login page
+      response_content = <<~HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>SpaceHunter Admin Login</title>
+          <meta charset='UTF-8'>
+          <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; background-color: #f5f5f5; }
+            .login-container { max-width: 400px; margin: 100px auto; padding: 30px; background-color: white; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+            h1 { text-align: center; color: #515151; margin-bottom: 30px; }
+            .form-group { margin-bottom: 20px; }
+            .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #515151; }
+            .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; color: #515151; box-sizing: border-box; }
+            .form-group input:focus { border-color: #f7b419; outline: none; box-shadow: 0 0 0 2px rgba(247, 180, 25, 0.2); }
+            .btn { display: block; width: 100%; background: #f7b419; color: #515151; padding: 12px 20px; 
+                   text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
+                   font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+            .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+            .back-link { display: block; text-align: center; margin-top: 20px; color: #515151; text-decoration: none; }
+            .back-link:hover { text-decoration: underline; }
+            .logo { font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 20px; color: #f7b419; }
+          </style>
+        </head>
+        <body>
+          <div class='login-container'>
+            <div class='logo'>SpaceHunter</div>
+            <h1>Admin Login</h1>
+            <form action='/admin/login' method='post'>
+              <div class='form-group'>
+                <label for='username'>Username</label>
+                <input type='text' id='username' name='username' required>
+              </div>
+              <div class='form-group'>
+                <label for='password'>Password</label>
+                <input type='password' id='password' name='password' required>
+              </div>
+              <button type='submit' class='btn'>Login</button>
+            </form>
+            <a href='/' class='back-link'>Back to Website</a>
+          </div>
+        </body>
+        </html>
+      HTML
+    end
+  elsif path == "/login"
+    # User login page
+    response_content = <<~HTML
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>SpaceHunter Login</title>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; background-color: #f5f5f5; }
+          .login-container { max-width: 400px; margin: 100px auto; padding: 30px; background-color: white; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+          h1 { text-align: center; color: #515151; margin-bottom: 30px; }
+          .form-group { margin-bottom: 20px; }
+          .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #515151; }
+          .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; color: #515151; box-sizing: border-box; }
+          .form-group input:focus { border-color: #f7b419; outline: none; box-shadow: 0 0 0 2px rgba(247, 180, 25, 0.2); }
+          .btn { display: block; width: 100%; background: #f7b419; color: #515151; padding: 12px 20px; 
+                 text-decoration: none; border-radius: 4px; border: none; cursor: pointer; font-size: 16px; 
+                 font-weight: bold; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+          .btn:hover { background: #ffc53d; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+          .back-link { display: block; text-align: center; margin-top: 20px; color: #515151; text-decoration: none; }
+          .back-link:hover { text-decoration: underline; }
+          .logo { font-size: 28px; font-weight: bold; text-align: center; margin-bottom: 20px; color: #f7b419; }
+          .signup-link { display: block; text-align: center; margin-top: 20px; color: #515151; }
+        </style>
+      </head>
+      <body>
+        <div class='login-container'>
+          <div class='logo'>SpaceHunter</div>
+          <h1>User Login</h1>
+          <form action='/login' method='post'>
+            <div class='form-group'>
+              <label for='email'>Email</label>
+              <input type='email' id='email' name='email' required>
+            </div>
+            <div class='form-group'>
+              <label for='password'>Password</label>
+              <input type='password' id='password' name='password' required>
+            </div>
+            <button type='submit' class='btn'>Login</button>
+          </form>
+          <div class='signup-link'>
+            Don't have an account? <a href='/signup'>Sign up</a>
+          </div>
+          <a href='/' class='back-link'>Back to Website</a>
+        </div>
+      </body>
+      </html>
+    HTML
   elsif path == "/api/apartments"
     # API endpoint for apartments - returns JSON data
     filtered_apartments = filter_apartments(query_params)
