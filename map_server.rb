@@ -198,7 +198,7 @@ loop do
   <title>SpaceHunter - Apartment Search</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBRLaOEJtLsmIW5CgFWuLrIpqAZt_nt6bQ&callback=initMap' async defer></script>
+  <script src='https://maps.googleapis.com/maps/api/js?callback=initMap' async defer></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; }
     h1, h2, h3 { color: #515151; }
@@ -236,10 +236,11 @@ loop do
     .checkbox-group { display: flex; align-items: center; }
     .checkbox-group input { width: auto; margin-right: 10px; }
     .checkbox-group input:checked { accent-color: #f7b419; }
-    .main-content { display: flex; gap: 30px; }
-    .map-container { flex: 1; height: 600px; border-radius: 8px; overflow: hidden; position: sticky; top: 20px; }
+    .top-section { display: flex; gap: 30px; margin-bottom: 30px; }
+    .filters-container { flex: 1; }
+    .map-container { flex: 1; height: 450px; border-radius: 8px; overflow: hidden; }
     #map { width: 100%; height: 100%; border-radius: 8px; border: 1px solid #e0e0e0; }
-    .left-content { flex: 1; }
+    .apartments-section { width: 100%; }
   </style>
 </head>
 <body>
@@ -258,92 +259,85 @@ loop do
       </div>
     </div>
     
-    <div class='search-container'>
-      <form action='/' method='get'>
-        <div class='form-row'>
-          <div class='form-group'>
-            <label for='neighborhood'>Neighborhood</label>
-            <input type='text' id='neighborhood' name='neighborhood' placeholder='E.g. Downtown, Midtown, etc.' value='#{query_params['neighborhood'] || ''}'>
-          </div>
-          <div class='form-group'>
-            <label for='min_bedrooms'>Minimum Bedrooms</label>
-            <select id='min_bedrooms' name='min_bedrooms'>
-              <option value='' #{query_params['min_bedrooms'].nil? || query_params['min_bedrooms'].empty? ? 'selected' : ''}>Any</option>
-              <option value='0' #{query_params['min_bedrooms'] == '0' ? 'selected' : ''}>Studio</option>
-              <option value='1' #{query_params['min_bedrooms'] == '1' ? 'selected' : ''}>1+ Bedrooms</option>
-              <option value='2' #{query_params['min_bedrooms'] == '2' ? 'selected' : ''}>2+ Bedrooms</option>
-              <option value='3' #{query_params['min_bedrooms'] == '3' ? 'selected' : ''}>3+ Bedrooms</option>
-            </select>
-          </div>
-          <div class='form-group'>
-            <label for='max_price'>Maximum Price</label>
-            <input type='number' id='max_price' name='max_price' placeholder='Enter maximum monthly rent' value='#{query_params['max_price'] || ''}'>
-          </div>
+    <div class='top-section'>
+      <div class='filters-container'>
+        <div class='search-container'>
+          <h2>Search Filters</h2>
+          <form action='/' method='get'>
+            <div class='form-row'>
+              <div class='form-group'>
+                <label for='neighborhood'>Neighborhood</label>
+                <input type='text' id='neighborhood' name='neighborhood' placeholder='E.g. Downtown, Midtown, etc.' value='#{query_params['neighborhood'] || ''}'>
+              </div>
+              <div class='form-group'>
+                <label for='min_bedrooms'>Minimum Bedrooms</label>
+                <select id='min_bedrooms' name='min_bedrooms'>
+                  <option value='' #{query_params['min_bedrooms'].nil? || query_params['min_bedrooms'].empty? ? 'selected' : ''}>Any</option>
+                  <option value='0' #{query_params['min_bedrooms'] == '0' ? 'selected' : ''}>Studio</option>
+                  <option value='1' #{query_params['min_bedrooms'] == '1' ? 'selected' : ''}>1+ Bedrooms</option>
+                  <option value='2' #{query_params['min_bedrooms'] == '2' ? 'selected' : ''}>2+ Bedrooms</option>
+                  <option value='3' #{query_params['min_bedrooms'] == '3' ? 'selected' : ''}>3+ Bedrooms</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class='form-row'>
+              <div class='form-group'>
+                <label for='min_price'>Minimum Price</label>
+                <input type='number' id='min_price' name='min_price' placeholder='Enter minimum monthly rent' value='#{query_params['min_price'] || ''}'>
+              </div>
+              <div class='form-group'>
+                <label for='max_price'>Maximum Price</label>
+                <input type='number' id='max_price' name='max_price' placeholder='Enter maximum monthly rent' value='#{query_params['max_price'] || ''}'>
+              </div>
+            </div>
+            
+            <div class='form-row'>
+              <div class='form-group'>
+                <label for='property_type'>Property Type</label>
+                <select id='property_type' name='property_type'>
+                  <option value='' #{query_params['property_type'].nil? || query_params['property_type'].empty? ? 'selected' : ''}>Any</option>
+                  <option value='Apartment' #{query_params['property_type'] == 'Apartment' ? 'selected' : ''}>Apartment</option>
+                  <option value='Condo' #{query_params['property_type'] == 'Condo' ? 'selected' : ''}>Condo</option>
+                  <option value='Townhouse' #{query_params['property_type'] == 'Townhouse' ? 'selected' : ''}>Townhouse</option>
+                  <option value='Co-op' #{query_params['property_type'] == 'Co-op' ? 'selected' : ''}>Co-op</option>
+                </select>
+              </div>
+              <div class='form-group'>
+                <label for='min_square_feet'>Minimum Square Feet</label>
+                <input type='number' id='min_square_feet' name='min_square_feet' placeholder='Minimum square footage' value='#{query_params['min_square_feet'] || ''}'>
+              </div>
+            </div>
+            
+            <div class='form-row'>
+              <div class='form-group checkbox-group'>
+                <input type='checkbox' id='pet_friendly' name='pet_friendly' value='true' #{query_params['pet_friendly'] == 'true' ? 'checked' : ''}>
+                <label for='pet_friendly'>Pet Friendly</label>
+              </div>
+              <div class='form-group checkbox-group'>
+                <input type='checkbox' id='no_broker_fee' name='no_broker_fee' value='true' #{query_params['no_broker_fee'] == 'true' ? 'checked' : ''}>
+                <label for='no_broker_fee'>No Broker Fee</label>
+              </div>
+            </div>
+            
+            <div class='form-row'>
+              <button type='submit' class='btn btn-search'>Search</button>
+              <a href='/' class='btn btn-reset'>Reset</a>
+              <a href='/advanced-search' class='btn' style='background-color: #9b59b6;'>Advanced Search</a>
+            </div>
+          </form>
         </div>
-        
-        <div class='form-row'>
-          <div class='form-group'>
-            <label for='min_price'>Minimum Price</label>
-            <input type='number' id='min_price' name='min_price' placeholder='Enter minimum monthly rent' value='#{query_params['min_price'] || ''}'>
-          </div>
-          <div class='form-group'>
-            <label for='property_type'>Property Type</label>
-            <select id='property_type' name='property_type'>
-              <option value='' #{query_params['property_type'].nil? || query_params['property_type'].empty? ? 'selected' : ''}>Any</option>
-              <option value='Apartment' #{query_params['property_type'] == 'Apartment' ? 'selected' : ''}>Apartment</option>
-              <option value='Condo' #{query_params['property_type'] == 'Condo' ? 'selected' : ''}>Condo</option>
-              <option value='Townhouse' #{query_params['property_type'] == 'Townhouse' ? 'selected' : ''}>Townhouse</option>
-              <option value='Co-op' #{query_params['property_type'] == 'Co-op' ? 'selected' : ''}>Co-op</option>
-            </select>
-          </div>
-          <div class='form-group'>
-            <label for='min_square_feet'>Minimum Square Feet</label>
-            <input type='number' id='min_square_feet' name='min_square_feet' placeholder='Minimum square footage' value='#{query_params['min_square_feet'] || ''}'>
-          </div>
-        </div>
-        
-        <div class='form-row'>
-          <div class='form-group'>
-            <label for='amenities'>Amenities</label>
-            <input type='text' id='amenities' name='amenities' placeholder='E.g. Elevator, Doorman, etc.' value='#{query_params['amenities'] || ''}'>
-          </div>
-          <div class='form-group'>
-            <label for='available_from'>Available From</label>
-            <input type='date' id='available_from' name='available_from' value='#{query_params['available_from'] || ''}'>
-          </div>
-          <div class='form-group'>
-            <label for='lease_term'>Lease Term</label>
-            <select id='lease_term' name='lease_term'>
-              <option value='' #{query_params['lease_term'].nil? || query_params['lease_term'].empty? ? 'selected' : ''}>Any</option>
-              <option value='12 Months' #{query_params['lease_term'] == '12 Months' ? 'selected' : ''}>12 Months</option>
-              <option value='24 Months' #{query_params['lease_term'] == '24 Months' ? 'selected' : ''}>24 Months</option>
-            </select>
-          </div>
-        </div>
-        
-        <div class='form-row'>
-          <div class='form-group checkbox-group'>
-            <input type='checkbox' id='pet_friendly' name='pet_friendly' value='true' #{query_params['pet_friendly'] == 'true' ? 'checked' : ''}>
-            <label for='pet_friendly'>Pet Friendly</label>
-          </div>
-          <div class='form-group checkbox-group'>
-            <input type='checkbox' id='no_broker_fee' name='no_broker_fee' value='true' #{query_params['no_broker_fee'] == 'true' ? 'checked' : ''}>
-            <label for='no_broker_fee'>No Broker Fee</label>
-          </div>
-        </div>
-        
-        <div class='form-row'>
-          <button type='submit' class='btn btn-search'>Search</button>
-          <a href='/' class='btn btn-reset'>Reset</a>
-          <a href='/advanced-search' class='btn' style='background-color: #9b59b6;'>Advanced Search</a>
-        </div>
-      </form>
+      </div>
+      
+      <div class='map-container'>
+        <h2>Map View</h2>
+        <div id='map'></div>
+      </div>
     </div>
     
-    <div class='main-content'>
-      <div class='left-content'>
-        <h2>Available Apartments</h2>
-        <div class='apartments-grid'>"
+    <div class='apartments-section'>
+      <h2>Available Apartments</h2>
+      <div class='apartments-grid'>"
     
     # Filter apartments based on query parameters
     apartments = filter_apartments(query_params)
@@ -384,11 +378,6 @@ loop do
     response_content += "
         </div>
       </div>
-      
-      <div class='map-container'>
-        <div id='map'></div>
-      </div>
-    </div>
   </div>
   
   <script>
