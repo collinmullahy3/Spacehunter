@@ -1,4 +1,4 @@
-modules = ["ruby", "ruby-3.1", "python-3.11"]
+modules = ["ruby", "ruby-3.1", "python-3.11", "postgresql-16"]
 
 [nix]
 channel = "stable-24_05"
