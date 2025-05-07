@@ -6,81 +6,42 @@ require 'json'
 SITE_NAME = "SpaceHunter"
 LOGO_HTML = "SpaceHunter"
 
-# In-memory database for apartments
-APARTMENTS = [
-  {
-    id: 1,
-    title: "Luxurious Downtown Penthouse",
-    location: "123 Main Street, New York, NY 10001",
-    price: 3500,
-    bedrooms: 3,
-    bathrooms: 2,
-    square_feet: 1800,
-    description: "Experience luxury living in this stunning downtown penthouse with panoramic city views. This spacious 3-bedroom apartment features high-end finishes, a gourmet kitchen with stainless steel appliances, and a private balcony perfect for entertaining.",
-    features: ["Hardwood flooring throughout", "Floor-to-ceiling windows", "Central air conditioning", "In-unit washer and dryer", "24-hour doorman", "Fitness center access"],
-    available_from: "October 1, 2023",
-    neighborhood: "Downtown",
-    pet_friendly: true,
-    parking: "Available for $250/month",
-    image_url: "/images/apt1.jpg",
-    property_type: "Condo",
-    lease_term: "12 Months",
-    utilities_included: ["Water", "Heat"],
-    amenities: ["Elevator", "Doorman", "Fitness Center", "Rooftop Deck"],
-    status: "Available",
-    last_updated: "2023-09-01",
-    broker_fee: true,
-    security_deposit: 3500
-  },
-  {
-    id: 2,
-    title: "Cozy Midtown Studio",
-    location: "456 Park Avenue, New York, NY 10022",
-    price: 1800,
-    bedrooms: 0,
-    bathrooms: 1,
-    square_feet: 600,
-    description: "Perfectly situated studio apartment in the heart of Midtown. This efficient space features modern finishes, a renovated bathroom, and a kitchenette with premium appliances. Large windows provide ample natural light throughout the day.",
-    features: ["Renovated bathroom", "Kitchenette with premium appliances", "Large windows", "Built-in storage", "Air conditioning"],
-    available_from: "September 15, 2023",
-    neighborhood: "Midtown",
-    pet_friendly: false,
-    parking: "Street parking only",
-    image_url: "/images/apt2.jpg",
-    property_type: "Apartment",
-    lease_term: "12 Months",
-    utilities_included: ["Water"],
-    amenities: ["Elevator", "Laundry in Building"],
-    status: "Available",
-    last_updated: "2023-08-15",
-    broker_fee: false,
-    security_deposit: 1800
-  },
-  {
-    id: 3,
-    title: "Spacious Upper East Side 2BR",
-    location: "789 5th Avenue, New York, NY 10065",
-    price: 2800,
-    bedrooms: 2,
-    bathrooms: 1.5,
-    square_feet: 1200,
-    description: "Elegant pre-war apartment in a prime Upper East Side location. This 2-bedroom home features classic detailing, high ceilings, and a dedicated dining area. The large primary bedroom includes an en-suite half bath and generous closet space.",
-    features: ["Pre-war details", "High ceilings", "Separate dining area", "En-suite half bath in primary bedroom", "Hardwood floors", "Crown molding"],
-    available_from: "October 15, 2023",
-    neighborhood: "Upper East Side",
-    pet_friendly: true,
-    parking: "Garage available nearby",
-    image_url: "/images/apt3.jpg",
-    property_type: "Co-op",
-    lease_term: "24 Months",
-    utilities_included: [],
-    amenities: ["Elevator", "Laundry in Building", "Package Room"],
-    status: "Available",
-    last_updated: "2023-09-05",
-    broker_fee: true,
-    security_deposit: 5600
-  }
-]
+# In-memory database for apartments - from XML feed
+require_relative './apartments_data'
+
+# Add fallback image URLs if needed
+APARTMENTS.each do |apt|
+  apt_id = apt[:id] % 5 + 1
+  apt[:image_url] = "/images/apt#{apt_id}.jpg" if !apt[:image_url] || apt[:image_url].empty?
+end
+
+# First property for reference - DO NOT DELETE
+SAMPLE_APARTMENT = {
+  id: 1,
+  title: "Luxurious Downtown Penthouse",
+  location: "123 Main Street, New York, NY 10001",
+  price: 3500,
+  bedrooms: 3,
+  bathrooms: 2,
+  square_feet: 1800,
+  description: "Experience luxury living in this stunning downtown penthouse with panoramic city views. This spacious 3-bedroom apartment features high-end finishes, a gourmet kitchen with stainless steel appliances, and a private balcony perfect for entertaining.",
+  features: ["Hardwood flooring throughout", "Floor-to-ceiling windows", "Central air conditioning", "In-unit washer and dryer", "24-hour doorman", "Fitness center access"],
+  available_from: "October 1, 2023",
+  neighborhood: "Downtown",
+  pet_friendly: true,
+  parking: "Available for $250/month",
+  image_url: "/images/apt1.jpg",
+  property_type: "Condo",
+  lease_term: "12 Months",
+  utilities_included: ["Water", "Heat"],
+  amenities: ["Elevator", "Doorman", "Fitness Center", "Rooftop Deck"],
+  status: "Available",
+  last_updated: "2023-09-01",
+  broker_fee: true,
+  security_deposit: 3500
+}
+
+# The actual apartment data is loaded from apartments_data.rb at the beginning of this file
 
 # Apartment filtering
 def filter_apartments(params)
