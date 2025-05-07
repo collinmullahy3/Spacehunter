@@ -14,15 +14,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "RealtyMonsterApp"
+args = "SpaceHunterApp"
 
 [[workflows.workflow]]
-name = "RealtyMonsterApp"
+name = "SpaceHunterApp"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd . && ruby simple_server.rb"
+args = "cd . && ruby map_server.rb"
 waitForPort = 5000
 
 [deployment]

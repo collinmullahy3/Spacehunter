@@ -4,7 +4,7 @@ require 'json'
 
 # Site configuration
 SITE_NAME = "SpaceHunter"
-LOGO_HTML = "<img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter"
+LOGO_HTML = "SpaceHunter"
 
 # In-memory database for apartments
 APARTMENTS = [
@@ -388,7 +388,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
@@ -467,7 +467,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
@@ -573,7 +573,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
@@ -677,7 +677,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
@@ -802,7 +802,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
@@ -923,7 +923,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
@@ -1137,7 +1137,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
@@ -1298,6 +1298,7 @@ loop do
   <title>SpaceHunter - Apartment Search</title>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBRLaOEJtLsmIW5CgFWuLrIpqAZt_nt6bQ&callback=initMap' async defer></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #515151; }
     h1, h2, h3 { color: #515151; }
@@ -1331,16 +1332,20 @@ loop do
     .apartment-feature { display: flex; align-items: center; color: #515151; }
     .apartment-feature strong { color: #515151; }
     .apartment-feature span { margin-left: 5px; }
-    .footer { background-color: #515151; color: #515151; padding: 40px 0; margin-top: 50px; }
+    .footer { background-color: #515151; color: white; padding: 40px 0; margin-top: 50px; }
     .checkbox-group { display: flex; align-items: center; }
     .checkbox-group input { width: auto; margin-right: 10px; }
     .checkbox-group input:checked { accent-color: #f7b419; }
+    .main-content { display: flex; gap: 30px; }
+    .map-container { flex: 1; height: 600px; border-radius: 8px; overflow: hidden; position: sticky; top: 20px; }
+    #map { width: 100%; height: 100%; border-radius: 8px; border: 1px solid #e0e0e0; }
+    .left-content { flex: 1; }
   </style>
 </head>
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
@@ -1435,9 +1440,10 @@ loop do
       </form>
     </div>
     
-    <h2>Available Apartments</h2>
-    
-    <div class='apartments-grid'>"
+    <div class='main-content'>
+      <div class='left-content'>
+        <h2>Available Apartments</h2>
+        <div class='apartments-grid'>"
     
     # Filter apartments based on query parameters
     apartments = filter_apartments(query_params)
@@ -1535,7 +1541,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
@@ -1650,7 +1656,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
@@ -1701,7 +1707,7 @@ loop do
 <body>
   <header class='header'>
     <div class='container'>
-      <div class='logo'><img src='/images/myspacenyc-logo.png' alt='SpaceHunter Logo' style='height: 40px; margin-right: 10px; vertical-align: middle;'> SpaceHunter</div>
+      <div class='logo'>SpaceHunter</div>
     </div>
   </header>
   
